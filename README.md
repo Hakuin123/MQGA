@@ -8,7 +8,7 @@
 
 ## 我们做了什么
 
-我们借助[LSPatch]()的“便携模式”修补了[QQ 8.8.50](https://dldir1.qq.com/qqfile/qq/expcenter/1458/28d2b3f249db11ec819ad00d4e61d76c/qq_8.8.50.6735_rb4227cab_v2324_release.apk)版本
+我们借助[LSPatch](https://github.com/LSPosed/LSPatch)的“便携模式”修补了[QQ 8.8.50](https://dldir1.qq.com/qqfile/qq/expcenter/1458/28d2b3f249db11ec819ad00d4e61d76c/qq_8.8.50.6735_rb4227cab_v2324_release.apk)版本
 
 并在其中嵌入了以下好用的开源模块：
 
@@ -21,3 +21,9 @@
 ## “为什么追我？”“我要MQGA！”
 
 好好好，在[Releases](https://github.com/Hakuin123/MQGA/releases)。
+
+## 更好地食用
+
+配合GitHub镜像站/加速下载站更香。
+
+另请参阅：https://github.com/librarycloud/list
