@@ -1,2 +1,17 @@
-# MQGA
-MAKE QQ GREAT AGAIN!
+# MQGA‖MAKE QQ GREAT AGAIN!
+
+欢迎，这里是MQGA研究院。
+
+我们的宗旨是：“让QQ再次伟大！”
+
+## 我们做了什么
+
+我们借助[LSPatch]()的“便携模式”修补了[QQ 8.8.50](https://dldir1.qq.com/qqfile/qq/expcenter/1458/28d2b3f249db11ec819ad00d4e61d76c/qq_8.8.50.6735_rb4227cab_v2324_release.apk)版本
+
+并在其中嵌入了以下好用的开源模块：
+
+- [QAuxiliary](https://github.com/cinit/QAuxiliary)
+- [XAutoDaily](https://github.com/LuckyPray/XAutoDaily)
+- [TSBattery](https://github.com/fankes/TSBattery)
+
+（如果有好用的模块欢迎[发Issue推荐](https://github.com/Hakuin123/MQGA/issues/new)呀）
