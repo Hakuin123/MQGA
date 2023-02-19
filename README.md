@@ -1,6 +1,8 @@
 # MQGA‖MAKE QQ GREAT AGAIN!
 
-欢迎，这里是MQGA研究院。
+欢迎，这里是MQGA研究院[^1]。
+
+[^1]: 此虚拟架空设定仅存在于此GitHub仓库，请不要在其他[白熊工作室](http://www.HK256.top)相关话题下提起。
 
 我们的宗旨是：“让QQ再次伟大！”
 
@@ -14,4 +16,8 @@
 - [XAutoDaily](https://github.com/LuckyPray/XAutoDaily)
 - [TSBattery](https://github.com/fankes/TSBattery)
 
-（如果有好用的模块欢迎[发Issue推荐](https://github.com/Hakuin123/MQGA/issues/new)呀）
+（如果有好用的模块欢迎[发Issue推荐](https://github.com/Hakuin123/MQGA/issues/new)给我们。）
+
+## “为什么追我？”“我要MQGA！”
+
+好好好，在[Releases](https://github.com/Hakuin123/MQGA/releases)。
