@@ -15,6 +15,7 @@
 - [QAuxiliary](https://github.com/cinit/QAuxiliary)
 - [XAutoDaily](https://github.com/LuckyPray/XAutoDaily)
 - [TSBattery](https://github.com/fankes/TSBattery)
+- [QQ瘦身（QQCleaner）](https://github.com/KitsunePie/QQCleaner)
 
 （如果有好用的模块欢迎[发Issue推荐](https://github.com/Hakuin123/MQGA/issues/new)给我们。）
 
