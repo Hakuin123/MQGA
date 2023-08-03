@@ -45,7 +45,7 @@ QQ最新 & 8.9.5 状态：![状态：default](https://github.com/Hakuin123/MQGA/
 
 ## 计划实现的功能
 
-- [x] 借助[GitHub Actions](https://github.com/Hakuin123/MQGA/actions)修补QQ
+- [x] https://github.com/Hakuin123/MQGA/pull/1
 - [ ] 修补时自动下载最新版本QQ（使用固定连接）
 - [ ] 当模块更新时自动重新修补
 - [ ] 当QQ更新时自动重新修补
