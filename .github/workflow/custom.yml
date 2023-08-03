@@ -1,0 +1,74 @@
+name: Custom
+
+# 控制工作流何时运行
+on:
+  # 手动运行工作流
+  workflow_dispatch:
+    inputs:
+      version: 
+        description: '自定义版本号'
+        required: true
+        type: string
+      link:
+        description: '指定下载链接（直链）'
+        required: true
+        type: string
+      channel:
+        description: '模块版本通道（暂不支持CI）'
+        required: true
+        type: choice
+        options:
+          - default
+          - CI
+        default: 'default'
+      
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  build-default:
+    if: inputs.channel == 'default'
+    runs-on: ubuntu-latest
+    steps:
+      # 下载LSPatch
+      - name: Download LSPatch
+        run: gh release download --repo LSPosed/LSPatch --pattern lspatch.jar
+
+      # 下载待修补的应用
+      - name: 下载指定版本的QQ
+        run: wget -O QQ-custom.apk https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_8.9.58_64_HB2.apk
+
+      # 使用GitHub CLI下载模块最新Release版本
+      - name: 下载模块
+        run: |
+          gh release download -O QAuxiliary.apk --repo cinit/QAuxiliary     --pattern '*-arm64.apk'
+          gh release download -O XAutoDaily.apk --repo LuckyPray/XAutoDaily --pattern '*.apk'
+          gh release download -O TSBattery.apk  --repo fankes/TSBattery     --pattern 'app-release.apk'
+          gh release download -O QQCleaner.apk  --repo KitsunePie/QQCleaner --pattern 'app-release.apk'
+
+      # 修补
+      - run: java -jar lspatch.jar QQ-custom.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk
+
+      # 发布Release以便下载
+      #- name: 发布Release
+      #  uses: softprops/action-gh-release@v1
+      #  with:
+      #    files: QQ-custom-lspatched.apk
+      #    tag_name: Custom
+      #    name: QQ Custom
+      #    body: 仅在此发布最新修补的自定义版本 版本号：${{ inputs.version }}
+
+      # 上传修补完成的文件
+      - name: 上传修补完成的文件
+        uses: actions/upload-artifact@v3
+        with:
+          name: QQ-${{ inputs.version }}-Release
+          path: QQ-custom-360-lspatched.apk
+
+
+  build-ci:
+    if: inputs.channel == 'CI'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo '这玩意还没做好，别用'
