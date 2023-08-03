@@ -51,7 +51,7 @@ jobs:
         with:
           files: QQ-8.9.58-360-lspatched.apk
           tag_name: Release
-          name: QQ Release
+          name: QQ Releases
           body: 仅在此发布最新修补的Release版本
 
 
@@ -73,6 +73,6 @@ jobs:
         with:
           files: QQ-latest-360-lspatched.apk
           tag_name: Release
-          name: QQ Release
+          name: QQ Releases
           body: 标有“latest”的是基于最新版本修补的版本
           append_body: true
