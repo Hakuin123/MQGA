@@ -35,18 +35,19 @@ jobs:
           gh release download -O TSBattery.apk  --repo fankes/TSBattery     --pattern 'app-release.apk'
           gh release download -O QQCleaner.apk  --repo KitsunePie/QQCleaner --pattern 'app-release.apk'
 
-      # 修补
-      - run: java -jar lspatch.jar QQ-8.9.58.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk
+      # 开始修补应用
+      - name: 修补应用
+        run: java -jar lspatch.jar QQ-8.9.58.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk
 
       # 上传修补完成的文件
-      #- name: 上传修补完成的文件
-      #  uses: actions/upload-artifact@v3
-      #  with:
-      #    name: QQ-8.9.58-Release
-      #    path: QQ-8.9.58-360-lspatched.apk
+      - name: 上传修补完成的文件
+        uses: actions/upload-artifact@v3
+        with:
+          name: QQ-8.9.58-Release
+          path: QQ-8.9.58-360-lspatched.apk
 
       # 发布Release以便下载
-      - name: Release
+      - name: Draft Release
         uses: softprops/action-gh-release@v1
         with:
           files: QQ-8.9.58-360-lspatched.apk
@@ -64,11 +65,12 @@ jobs:
       # 酷安 run: wget -O QQ-latest.apk 'https://dl.coolapk.com/down?pn=com.tencent.mobileqq&id=MzgzNA&h=aefedf55ryt58j'
       # 豌豆荚（有固定链接但更新不及时） run: wget -O QQ-latest.apk https://www.wandoujia.com/apps/566489/download
 
-      # 修补
-      - run: java -jar lspatch.jar QQ-latest.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk
+      # 开始修补应用
+      - name: 修补应用
+        run: java -jar lspatch.jar QQ-latest.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk
 
       # 再次发布Release
-      - name: Release
+      - name: Draft Release
         uses: softprops/action-gh-release@v1
         with:
           files: QQ-latest-360-lspatched.apk
