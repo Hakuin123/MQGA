@@ -59,9 +59,8 @@ jobs:
 
 
       - name: 下载最新版QQ
-      # 官方直链(临时！！！)
-        run: wget -O QQ-latest.apk https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_8.9.73_64.apk
-      # 由于QQ官方未给出固定链接，故使用第三方提供下载（豌豆荚有固定链接但更新不及时）
+        run: wget -O QQ-latest.apk https://d.apkpure.com/b/APK/com.tencent.mobileqq?version=latest
+      # 由于QQ官方未给出下载最新版本的固定链接，故使用APKPure提供下载
       # 酷安 run: wget -O QQ-latest.apk 'https://dl.coolapk.com/down?pn=com.tencent.mobileqq&id=MzgzNA&h=aefedf55ryt58j'
       # 豌豆荚（有固定链接但更新不及时） run: wget -O QQ-latest.apk https://www.wandoujia.com/apps/566489/download
 
