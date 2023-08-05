@@ -40,11 +40,11 @@ jobs:
         run: java -jar lspatch.jar QQ-8.9.58.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk
 
       # 上传修补完成的文件
-      - name: 上传修补完成的文件
-        uses: actions/upload-artifact@v3
-        with:
-          name: QQ-8.9.58-Release
-          path: QQ-8.9.58-360-lspatched.apk
+      #- name: 上传修补完成的文件
+      #  uses: actions/upload-artifact@v3
+      #  with:
+      #    name: QQ-8.9.58-Release
+      #    path: QQ-8.9.58-360-lspatched.apk
 
       # 发布Release以便下载
       - name: Draft Release
