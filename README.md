@@ -16,13 +16,13 @@ QQ最新 & 8.9.58 状态：![状态：default](https://github.com/Hakuin123/MQGA
 <p>
 
 1. [登录GitHub](https://github.com/signin)，然后[Fork](https://github.com/Hakuin123/MQGA/fork)此仓库
-2. 在页面顶部点击`Actions`
+2. 在**你自己fork后的仓库**（带有你自己的用户名）页面顶部点击`Actions`
 3. （点开`All workflows`后）点击`Custom`
 4. 点击蓝色`#DDF4FF`横幅`This workflow has a workflow_dispatch event trigger.`右边的`Run workflow`
 5. 在弹出的窗口内填写下列内容：
-  - **自定义版本号**  输入你所自定义的QQ版本（对于实际执行无影响）
+  - **自定义版本号**  输入你所自定义的QQ版本（仅作名称标识作用，是否正确填写对于实际修补无影响）
   - **指定下载链接**  输入QQ/TIM安装包直链
-  - **模块版本通道**  选择使用正式发布版（default）还是预发布版（CI）的模块
+  - **模块版本通道**  选择使用正式版（default）还是测试版（CI）的模块
 6. 填写完成后点击绿色`#1F883D`的`Run workflow`并刷新页面，等待新增的工作流`Custom`的图标由黄色`#DBAB0A`变为绿色`#1F883D`，点开这个~~刚冒出来的花里胡哨变色的~~`Custom`
 7. 在`Artifacts`找到修补完成的.apk文件，点击以下载（未登录状态下无法下载）
 
@@ -31,6 +31,7 @@ QQ最新 & 8.9.58 状态：![状态：default](https://github.com/Hakuin123/MQGA
 </p>
 </details>
 
+> 免责声明：本仓库仅提供服务整合，QQ安装包及模块均由第三方提供，如在使用中出现问题，本仓库不对此负任何责任。下载本仓库提供的资源即表示同意上述声明。
 
 ## 我们做了什么
 
@@ -41,7 +42,7 @@ QQ最新 & 8.9.58 状态：![状态：default](https://github.com/Hakuin123/MQGA
 - [TSBattery](https://github.com/fankes/TSBattery)
 - [QQ瘦身（QQCleaner）](https://github.com/KitsunePie/QQCleaner)
 
-（如果有更多好用的模块，欢迎[发Issue推荐](https://github.com/Hakuin123/MQGA/issues/new)给我们。）
+（如果发现有更多好玩好用的模块，欢迎[发Issue推荐给我们](https://github.com/Hakuin123/MQGA/issues/new)。）
 
 ## 计划实现的功能
 
@@ -49,8 +50,8 @@ QQ最新 & 8.9.58 状态：![状态：default](https://github.com/Hakuin123/MQGA
 - [x] 修补时自动下载最新版本QQ（使用固定连接） #2
 - [ ] 当模块更新时自动重新修补
 - [ ] 当QQ更新时自动重新修补
-- [ ] 
-- [ ] 
+- [ ] 重修补后邮件通知使用者
+- [ ] Releases版本号迭代
 - [ ] 
 
 
