@@ -24,7 +24,7 @@ jobs:
 
       # 下载待修补的应用
       - name: 下载QQ 8.9.58
-      # 官方直链  run: wget -O QQ8.9.58. https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_8.9.58_64_HB2.apk
+      # 官方直链  run: wget -U "Mozilla/5.0" -O QQ8.9.58. https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_8.9.58_64_HB2.apk
         run: gh release download -O QQ-8.9.58.apk --repo Hakuin123/MQGA READY --pattern QQ_8.9.58_64_HB2.apk
 
       # 使用GitHub CLI下载模块最新Release版本
