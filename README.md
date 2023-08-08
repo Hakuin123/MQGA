@@ -4,7 +4,7 @@
 
 [^1]: 此虚拟架空设定仅存在于此GitHub仓库，请不要在其他[白熊工作室](http://www.HK256.top)相关话题下提起。
 
-QQ最新 & 8.9.5 状态：![状态：default](https://github.com/Hakuin123/MQGA/actions/workflows/default.yml/badge.svg)
+QQ最新 & 8.9.58 状态：![状态：default](https://github.com/Hakuin123/MQGA/actions/workflows/default.yml/badge.svg)
 
 ## “为什么追我？”“我要MQGA！”
 
@@ -46,7 +46,7 @@ QQ最新 & 8.9.5 状态：![状态：default](https://github.com/Hakuin123/MQGA/
 ## 计划实现的功能
 
 - [x] 借助GitHub Actions修补QQ #1
-- [ ] 修补时自动下载最新版本QQ（使用固定连接）
+- [x] 修补时自动下载最新版本QQ（使用固定连接） #2
 - [ ] 当模块更新时自动重新修补
 - [ ] 当QQ更新时自动重新修补
 - [ ] 
