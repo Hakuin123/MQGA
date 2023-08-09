@@ -48,7 +48,7 @@ jobs:
           gh release download -O QQCleaner.apk  --repo KitsunePie/QQCleaner --pattern 'app-release.apk'
 
       # 修补
-      - run: java -jar lspatch.jar QQ-custom.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk
+      - run: java -jar lspatch.jar QQ-custom.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk -l 2
 
       # 发布Release以便下载
       #- name: 发布Release
