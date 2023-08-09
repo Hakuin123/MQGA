@@ -1,3 +1,4 @@
+```
 Usage: <main class> [options] apks
   Options:
     -h, --help
@@ -31,3 +32,4 @@ Usage: <main class> [options] apks
     -v, --verbose
       Verbose output
       Default: false
+```
