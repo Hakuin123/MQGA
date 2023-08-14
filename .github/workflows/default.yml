@@ -51,8 +51,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: QQ-8.9.58-360-lspatched.apk
-          tag_name: QQ Releases ${{ github.run_id }
-          name: QQ Releases ${{ github.run_id }
+          tag_name: QQ Releases ${{ github.run_id }}
+          name: QQ Releases ${{ github.run_id }}
           body: 仅在此发布最新修补的Release版本
 
 
