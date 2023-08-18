@@ -6,6 +6,8 @@
 
 QQ最新 & 8.9.58 状态：![状态：default](https://github.com/Hakuin123/MQGA/actions/workflows/default.yml/badge.svg)
 
+MQGA修补包下载次数：![download](https://img.shields.io/github/downloads/Hakuin123/MQGA/total?logo=github)
+
 ## “为什么追我？”“我要MQGA！”
 
 ### QQ 最新版/8.9.58
