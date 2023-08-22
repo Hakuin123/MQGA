@@ -111,9 +111,22 @@ jobs:
             ### 本次打包使用的模块
             | 模块名称 | 模块版本 | 查看项目 |
             | ------- | -------- | ------- |
-            | QAuxiliary | ${{ steps.QAuxiliary.outputs.id }} | [点击跳转](https://github.com/cinit/QAuxiliary) |
-            | XAutoDaily | ${{ steps.XAutoDaily.outputs.id }} | [点击跳转](https://github.com/LuckyPray/XAutoDaily) |
-            | TSBattery  | ${{ steps.TSBattery.outputs.id }}  | [点击跳转](https://github.com/fankes/TSBattery) |
-            | QQCleaner  | ${{ steps.QQCleaner.outputs.id }}  | [点击跳转](https://github.com/KitsunePie/QQCleaner) |
+            | QAuxiliary | ${{ steps.QAuxiliary.outputs.release }} | [点击跳转](https://github.com/cinit/QAuxiliary) |
+            | XAutoDaily | ${{ steps.XAutoDaily.outputs.release }} | [点击跳转](https://github.com/LuckyPray/XAutoDaily) |
+            | TSBattery  | ${{ steps.TSBattery.outputs.release }}  | [点击跳转](https://github.com/fankes/TSBattery) |
+            | QQCleaner  | ${{ steps.QQCleaner.outputs.release }}  | [点击跳转](https://github.com/KitsunePie/QQCleaner) |
 
-            [LSPatch](https://github.com/LSPosed/LSPatch)版本：${{ steps.LSPatch.outputs.id }}
+            <details><summary>点击展开模块更新详情</summary>
+            <p>
+            #### QAuxiliary
+            ${{ steps.QAuxiliary.outputs.description }}
+            #### XAutoDaily
+            ${{ steps.XAutoDaily.outputs.description }}
+            #### TSBattery
+            ${{ steps.TSBattery.outputs.description }}
+            #### QQCleaner
+            ${{ steps.QQCleaner.outputs.description }}
+
+
+
+            [LSPatch](https://github.com/LSPosed/LSPatch)版本：${{ steps.LSPatch.outputs.release }}
