@@ -1,15 +1,27 @@
 name: Release
 
+run-name: Patch QQ
+
 # 控制工作流何时运行
 on:
-  #push:
-  #  branches: [ "main" ]
+  schedule:
+  - cron: '30 1 * * 4'
+  # Runs at 01:30, only on Thursday.
+  # Actions schedules run at most every 5 minutes using UTC time.
+  # “肯德基疯狂星期四”仅限9:30-23:00供应
+  # 上海市、广东省、福建省、海南省、广西壮族自治区等部分地区仅限10:30-23:00供应，具体以餐厅实际营业时间为准。
 
+  # https://docs.github.com/zh/actions/using-workflows/events-that-trigger-workflows#repository_dispatch
   repository_dispatch:
     types: [release]
 
   # 允许手动运行工作流
   workflow_dispatch:
+
+  # 新增Star时立即运行
+  # 注意：此项不应长期保持开启！
+  watch:
+    types: [started]
 
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -19,16 +31,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # 下载LSPatch
-      - name: Download LSPatch
+      - name: Download LSPatch 下载LSPatch
         run: gh release download --repo LSPosed/LSPatch --pattern lspatch.jar
 
       # 下载待修补的应用
-      - name: 下载QQ 8.9.58
+      - name: Download QQ 8.9.58 下载QQ 8.9.58
       # 官方直链  run: wget -O QQ8.9.58. https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_8.9.58_64_HB2.apk
         run: gh release download -O QQ-8.9.58.apk --repo Hakuin123/MQGA READY --pattern QQ_8.9.58_64_HB2.apk
 
       # 使用GitHub CLI下载模块最新Release版本
-      - name: 下载模块
+      - name: Download Modules 下载模块
         run: |
           gh release download -O QAuxiliary.apk --repo cinit/QAuxiliary     --pattern '*-arm64.apk'
           gh release download -O XAutoDaily.apk --repo LuckyPray/XAutoDaily --pattern '*.apk'
@@ -36,7 +48,7 @@ jobs:
           gh release download -O QQCleaner.apk  --repo KitsunePie/QQCleaner --pattern 'app-release.apk'
 
       # 开始修补应用
-      - name: 修补应用
+      - name: Patch QQ 8.9.58 修补QQ 8.9.58
         run: java -jar lspatch.jar QQ-8.9.58.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk -l 2
 
       # 上传修补完成的文件
@@ -46,36 +58,23 @@ jobs:
       #    name: QQ-8.9.58-Release
       #    path: QQ-8.9.58-360-lspatched.apk
 
-      # 发布Release以便下载
-      - name: Draft Release
-        uses: softprops/action-gh-release@v1
-        with:
-          draft: true
-          files: QQ-8.9.58-360-lspatched.apk
-          tag_name: QQ Releases ${{ github.run_id }}
-          name: QQ Releases ${{ github.run_id }}
-          body: 仅在此发布最新修补的Release版本
-
-
-
-
-      - name: 下载最新版QQ
+      - name: Download Latest QQ 下载最新版QQ
         run: wget -U "Mozilla/5.0" -O QQ-latest.apk https://d.apkpure.com/b/APK/com.tencent.mobileqq?version=latest
       # 由于QQ官方未给出下载最新版本的固定链接，故使用APKPure提供下载
       # 酷安 run: wget -O QQ-latest.apk 'https://dl.coolapk.com/down?pn=com.tencent.mobileqq&id=MzgzNA&h=aefedf55ryt58j'
       # 豌豆荚（有固定链接但更新不及时） run: wget -O QQ-latest.apk https://www.wandoujia.com/apps/566489/download
 
       # 开始修补应用
-      - name: 修补应用
+      - name: Patch Latest QQ 修补最新版QQ
         run: java -jar lspatch.jar QQ-latest.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk -l 2
 
-      # 再次发布Release
-      - name: Draft Release
+      # 发布Release
+      - name: Draft Release 发布Release
         uses: softprops/action-gh-release@v1
         with:
-          draft: false
-          files: QQ-latest-360-lspatched.apk
-          tag_name: QQ Releases ${{ github.run_id }}
-          name: QQ Releases ${{ github.run_id }}
-          body: 标有“latest”的是基于最新版本修补的版本
-          append_body: true
+          files: |
+            QQ-8.9.58-360-lspatched.apk
+            QQ-latest-360-lspatched.apk
+          tag_name: ${{ github.run_id }} # 存储库中每个工作流运行的唯一编号
+          name: QQ Releases ${{ github.run_number }} # 仓库中特定工作流程每个运行的唯一编号（从 1 开始递增）。
+          body: 仅在此发布最新修补的Release版本。标有“latest”的是基于最新版本修补的版本
