@@ -68,6 +68,34 @@ jobs:
       - name: Patch Latest QQ 修补最新版QQ
         run: java -jar lspatch.jar QQ-latest.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk -l 2
 
+      # 获取模块版本信息
+  
+      - id: QAuxiliary
+        uses: pozetroninc/github-action-get-latest-release@v0.7.0
+        with:
+          repository: cinit/QAuxiliary
+          excludes: prerelease, draft
+      - id: XAutoDaily
+        uses: pozetroninc/github-action-get-latest-release@v0.7.0
+        with:
+          repository: LuckyPray/XAutoDaily
+          excludes: prerelease, draft
+      - id: TSBattery
+        uses: pozetroninc/github-action-get-latest-release@v0.7.0
+        with:
+          repository: fankes/TSBattery
+          excludes: prerelease, draft
+      - id: QQCleaner
+        uses: pozetroninc/github-action-get-latest-release@v0.7.0
+        with:
+          repository: KitsunePie/QQCleaner
+          excludes: prerelease, draft
+      - id: LSPatch
+        uses: pozetroninc/github-action-get-latest-release@v0.7.0
+        with:
+          repository: LSPosed/LSPatch
+          excludes: prerelease, draft
+
       # 发布Release
       - name: Draft Release 发布Release
         uses: softprops/action-gh-release@v1
@@ -77,4 +105,15 @@ jobs:
             QQ-latest-360-lspatched.apk
           tag_name: ${{ github.run_id }} # 存储库中每个工作流运行的唯一编号
           name: QQ Releases ${{ github.run_number }} # 仓库中特定工作流程每个运行的唯一编号（从 1 开始递增）。
-          body: 仅在此发布最新修补的Release版本。标有“latest”的是基于最新版本修补的版本
+          body: |
+            仅在此发布最新修补的Release版本，标有“latest”的是基于最新版本QQ修补的版本。
+
+            ### 本次打包使用的模块
+            | 模块名称 | 模块版本 |
+            | ------- | -------- |
+            | QAuxiliary | ${{ steps.QAuxiliary.outputs.release }} |
+            | XAutoDaily | ${{ steps.XAutoDaily.outputs.release }} |
+            | TSBattery  | ${{ steps.TSBattery.outputs.release }}  |
+            | QQCleaner  | ${{ steps.QQCleaner.outputs.release }}  |
+
+            LSPatch版本：${{ steps.LSPatch.outputs.release }}
