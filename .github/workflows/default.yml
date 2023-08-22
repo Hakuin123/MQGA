@@ -20,8 +20,8 @@ on:
 
   # 新增Star时立即运行
   # 注意：此项不应长期保持开启！
-  watch:
-    types: [started]
+  # watch:
+  #   types: [started]
 
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
