@@ -109,11 +109,11 @@ jobs:
             仅在此发布最新修补的Release版本，标有“latest”的是基于最新版本QQ修补的版本。
 
             ### 本次打包使用的模块
-            | 模块名称 | 模块版本 |
-            | ------- | -------- |
-            | QAuxiliary | ${{ steps.QAuxiliary.outputs.release }} |
-            | XAutoDaily | ${{ steps.XAutoDaily.outputs.release }} |
-            | TSBattery  | ${{ steps.TSBattery.outputs.release }}  |
-            | QQCleaner  | ${{ steps.QQCleaner.outputs.release }}  |
+            | 模块名称 | 模块版本 | 查看项目 |
+            | ------- | -------- | ------- |
+            | QAuxiliary | ${{ steps.QAuxiliary.outputs.id }} | [点击跳转](https://github.com/cinit/QAuxiliary) |
+            | XAutoDaily | ${{ steps.XAutoDaily.outputs.id }} | [点击跳转](https://github.com/LuckyPray/XAutoDaily) |
+            | TSBattery  | ${{ steps.TSBattery.outputs.id }}  | [点击跳转](https://github.com/fankes/TSBattery) |
+            | QQCleaner  | ${{ steps.QQCleaner.outputs.id }}  | [点击跳转](https://github.com/KitsunePie/QQCleaner) |
 
-            LSPatch版本：${{ steps.LSPatch.outputs.release }}
+            [LSPatch](https://github.com/LSPosed/LSPatch)版本：${{ steps.LSPatch.outputs.id }}
