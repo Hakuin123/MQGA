@@ -42,7 +42,7 @@ jobs:
       # 使用GitHub CLI下载模块最新Release版本
       - name: Download Modules 下载模块
         run: |
-          gh release download -O QAuxiliary.apk --repo cinit/QAuxiliary     --pattern '*-arm64.apk'
+          gh release download -O QAuxiliary.apk --repo cinit/QAuxiliary     --pattern '*arm64.apk'
           gh release download -O XAutoDaily.apk --repo LuckyPray/XAutoDaily --pattern '*.apk'
           gh release download -O TSBattery.apk  --repo fankes/TSBattery     --pattern 'app-release.apk'
           gh release download -O QQCleaner.apk  --repo KitsunePie/QQCleaner --pattern 'app-release.apk'
