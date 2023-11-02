@@ -15,6 +15,10 @@ on:
   repository_dispatch:
     types: [release]
 
+  # 仅供测试：每次提交时运行工作流
+  push: 
+    branches: [ "main" ]
+
   # 允许手动运行工作流
   workflow_dispatch:
 
