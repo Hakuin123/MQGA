@@ -31,6 +31,12 @@ jobs:
     if: inputs.channel == 'default'
     runs-on: ubuntu-latest
     steps:
+      - name: 配置JAVA SDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '17'
+
       # 下载LSPatch
       - name: Download LSPatch
         run: gh release download -O LSPatch.jar --repo LSPosed/LSPatch --pattern *.jar
