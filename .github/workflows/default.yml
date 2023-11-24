@@ -116,8 +116,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            QQ-8.9.58-360-lspatched.apk
-            QQ-latest-360-lspatched.apk
+            *-lspatched.apk
           tag_name: ${{ github.run_id }} # 存储库中每个工作流运行的唯一编号
           name: QQ Releases ${{ github.run_number }} # 仓库中特定工作流程每个运行的唯一编号（从 1 开始递增）。
           body: |
