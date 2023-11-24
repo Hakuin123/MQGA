@@ -76,7 +76,7 @@ jobs:
 
       # 开始修补应用
       - name: Patch Latest QQ 修补最新版QQ
-        run: java -jar lspatch.jar QQ-latest.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk -l 2
+        run: java -jar LSPatch.jar QQ-latest.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk -l 2
 
       # 获取模块版本信息
   
