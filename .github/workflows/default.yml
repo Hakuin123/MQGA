@@ -79,26 +79,31 @@ jobs:
         with:
           repository: cinit/QAuxiliary
           excludes: prerelease, draft
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       - id: XAutoDaily
         uses: pozetroninc/github-action-get-latest-release@v0.7.0
         with:
           repository: LuckyPray/XAutoDaily
           excludes: prerelease, draft
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       - id: TSBattery
         uses: pozetroninc/github-action-get-latest-release@v0.7.0
         with:
           repository: fankes/TSBattery
           excludes: prerelease, draft
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       - id: QQCleaner
         uses: pozetroninc/github-action-get-latest-release@v0.7.0
         with:
           repository: KitsunePie/QQCleaner
           excludes: prerelease, draft
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       - id: LSPatch
         uses: pozetroninc/github-action-get-latest-release@v0.7.0
         with:
           repository: LSPosed/LSPatch
           excludes: prerelease, draft
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       # 发布Release
       - name: Draft Release 发布Release
@@ -121,7 +126,6 @@ jobs:
             | QQCleaner  | ${{ steps.QQCleaner.outputs.release }}  | [点击跳转](https://github.com/KitsunePie/QQCleaner) |
 
             <details><summary>点击展开模块更新详情</summary>
-            <p>
             #### QAuxiliary
             ${{ steps.QAuxiliary.outputs.description }}
             #### XAutoDaily
@@ -130,7 +134,4 @@ jobs:
             ${{ steps.TSBattery.outputs.description }}
             #### QQCleaner
             ${{ steps.QQCleaner.outputs.description }}
-
-
-
-            [LSPatch](https://github.com/LSPosed/LSPatch)版本：${{ steps.LSPatch.outputs.release }}
+            #### [LSPatch](https://github.com/LSPosed/LSPatch)版本：${{ steps.LSPatch.outputs.release }}
