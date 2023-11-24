@@ -36,7 +36,7 @@ jobs:
     steps:
       # 下载LSPatch
       - name: Download LSPatch 下载LSPatch
-        run: gh release download --repo LSPosed/LSPatch --pattern lspatch.jar
+        run: gh release download -O LSPatch.jar --repo LSPosed/LSPatch --pattern '*.jar'
 
       # 下载待修补的应用
       - name: Download QQ 8.9.58 下载QQ 8.9.58
@@ -53,7 +53,7 @@ jobs:
 
       # 开始修补应用
       - name: Patch QQ 8.9.58 修补QQ 8.9.58
-        run: java -jar lspatch.jar QQ-8.9.58.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk -l 2
+        run: java -jar LSPatch.jar QQ-8.9.58.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk -l 2
 
       # 上传修补完成的文件
       #- name: 上传修补完成的文件
@@ -79,31 +79,31 @@ jobs:
         with:
           repository: cinit/QAuxiliary
           excludes: prerelease, draft
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       - id: XAutoDaily
         uses: pozetroninc/github-action-get-latest-release@v0.7.0
         with:
           repository: LuckyPray/XAutoDaily
           excludes: prerelease, draft
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       - id: TSBattery
         uses: pozetroninc/github-action-get-latest-release@v0.7.0
         with:
           repository: fankes/TSBattery
           excludes: prerelease, draft
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       - id: QQCleaner
         uses: pozetroninc/github-action-get-latest-release@v0.7.0
         with:
           repository: KitsunePie/QQCleaner
           excludes: prerelease, draft
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       - id: LSPatch
         uses: pozetroninc/github-action-get-latest-release@v0.7.0
         with:
           repository: LSPosed/LSPatch
           excludes: prerelease, draft
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       # 发布Release
       - name: Draft Release 发布Release
