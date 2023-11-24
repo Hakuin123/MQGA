@@ -33,7 +33,7 @@ jobs:
     steps:
       # 下载LSPatch
       - name: Download LSPatch
-        run: gh release download --repo LSPosed/LSPatch --pattern lspatch.jar
+        run: gh release download -O LSPatch.jar --repo LSPosed/LSPatch --pattern *.jar
 
       # 下载待修补的应用
       - name: 下载指定版本的QQ
@@ -48,7 +48,7 @@ jobs:
           gh release download -O QQCleaner.apk  --repo KitsunePie/QQCleaner --pattern '*.apk'
 
       # 修补
-      - run: java -jar lspatch.jar QQ-custom.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk -l 2
+      - run: java -jar LSPatch.jar QQ-custom.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk -l 2
 
       # 发布Release以便下载
       #- name: 发布Release
@@ -64,7 +64,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: QQ-${{ inputs.version }}-Release
-          path: QQ-custom-360-lspatched.apk
+          path: .
 
 
   build-ci:
