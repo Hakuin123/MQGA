@@ -53,7 +53,7 @@ MQGA修补包下载次数：![download](https://img.shields.io/github/downloads/
 - [ ] 当模块更新时自动重新修补
 - [ ] 当QQ更新时自动重新修补
 - [ ] 重修补后邮件通知使用者
-- [ ] Releases版本号迭代
+- [x] Releases版本号迭代
 - [ ] 
 
 
@@ -66,7 +66,7 @@ MQGA修补包下载次数：![download](https://img.shields.io/github/downloads/
 最后一个不基于QQ NT的版本
 
 ### [QQ 8.8.50](https://dldir1.qq.com/qqfile/qq/expcenter/1458/28d2b3f249db11ec819ad00d4e61d76c/qq_8.8.50.6735_rb4227cab_v2324_release.apk)
-最后一个不是3A大作（未内置虚幻引擎4）的版本
+最后一个不是3A大作（未内置虚幻引擎4，无超级QQ秀）的版本
 
 ### [TIM（当前最新版）](https://office.qq.com/download.html)
 极为简洁的版本，底包基于QQ 8.3.9
