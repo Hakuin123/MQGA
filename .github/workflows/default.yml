@@ -16,7 +16,7 @@ on:
     types: [release]
 
   # 仅供测试：每次提交时运行工作流
-  push: 
+  push:
     branches: [ "main" ]
 
   # 允许手动运行工作流
@@ -39,7 +39,7 @@ jobs:
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '17'
-        
+
       # 下载LSPatch
       - name: Download LSPatch 下载LSPatch
         run: gh release download -O LSPatch.jar --repo LSPosed/LSPatch --pattern '*.jar'
@@ -61,25 +61,23 @@ jobs:
       - name: Patch QQ 8.9.58 修补QQ 8.9.58
         run: java -jar LSPatch.jar QQ-8.9.58.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk -l 2
 
-      # 上传修补完成的文件
-      #- name: 上传修补完成的文件
-      #  uses: actions/upload-artifact@v3
-      #  with:
-      #    name: QQ-8.9.58-Release
-      #    path: QQ-8.9.58-360-lspatched.apk
-
       - name: Download Latest QQ 下载最新版QQ
-        run: wget -U "Mozilla/5.0" -O QQ-latest.apk https://d.apkpure.net/b/APK/com.tencent.mobileqq?version=latest
-      # 由于QQ官方未给出下载最新版本的固定链接，故使用APKPure提供下载
-      # 酷安 run: wget -O QQ-latest.apk 'https://dl.coolapk.com/down?pn=com.tencent.mobileqq&id=MzgzNA&h=aefedf55ryt58j'
-      # 豌豆荚（有固定链接但更新不及时） run: wget -O QQ-latest.apk https://www.wandoujia.com/apps/566489/download
+        run: |
+          response=$(curl -s -X POST -H "Content-Type: application/json" -d '{"packagename":"com.tencent.mobileqq"}' https://upage.html5.qq.com/wechat-apkinfo)
+          response=$(echo "$response" | tr -cd '[:print:]')
+          version_name=$(echo "$response" | jq -r '.app_detail_records."com.tencent.mobileqq".apk_all_data.version_name')
+          download_url=$(echo "$response" | jq -r '.app_detail_records."com.tencent.mobileqq".apk_all_data.url')
+          echo "获取到最新版本号: $version_name"
+          echo "直链下载地址: $download_url"
+
+          wget -nv -U "Mozilla/5.0" -O "QQ-$version_name.apk" $download_url
 
       # 开始修补应用
       - name: Patch Latest QQ 修补最新版QQ
         run: java -jar LSPatch.jar QQ-latest.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk -l 2
 
       # 获取模块版本信息
-  
+
       - id: QAuxiliary
         uses: pozetroninc/github-action-get-latest-release@v0.7.0
         with:
