@@ -46,10 +46,10 @@ jobs:
 
       - name: Download Latest QQ 下载最新版QQ
         run: |
-          response = $(curl -s -X POST -H "Content-Type: application/json" -d '{"packagename":"com.tencent.mobileqq"}' https://upage.html5.qq.com/wechat-apkinfo)
-          response = $(echo "$response" | tr -cd '[:print:]')
-          version_name = $(echo "$response" | jq -r '.app_detail_records."com.tencent.mobileqq".apk_all_data.version_name')
-          download_url = $(echo "$response" | jq -r '.app_detail_records."com.tencent.mobileqq".apk_all_data.url')
+          response=$(curl -s -X POST -H "Content-Type: application/json" -d '{"packagename":"com.tencent.mobileqq"}' https://upage.html5.qq.com/wechat-apkinfo)
+          response=$(echo "$response" | tr -cd '[:print:]')
+          version_name=$(echo "$response" | jq -r '.app_detail_records."com.tencent.mobileqq".apk_all_data.version_name')
+          download_url=$(echo "$response" | jq -r '.app_detail_records."com.tencent.mobileqq".apk_all_data.url')
           echo "获取到最新版本号: $version_name"
           echo "直链下载地址: $download_url"
           wget -nv -U "Mozilla/5.0" -O "QQ-$version_name-latest.apk" $download_url
