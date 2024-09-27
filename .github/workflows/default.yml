@@ -40,16 +40,25 @@ jobs:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '17'
 
+      - name: Download Custom QQ 下载自定义版本QQ
+      # 官方直链：https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_8.9.58_64_HB2.apk
+        run: gh release download -O QQ-8.9.58.apk --repo Hakuin123/MQGA READY --pattern QQ_8.9.58_64_HB2.apk
+
+      - name: Download Latest QQ 下载最新版QQ
+        run: |
+          response = $(curl -s -X POST -H "Content-Type: application/json" -d '{"packagename":"com.tencent.mobileqq"}' https://upage.html5.qq.com/wechat-apkinfo)
+          response = $(echo "$response" | tr -cd '[:print:]')
+          version_name = $(echo "$response" | jq -r '.app_detail_records."com.tencent.mobileqq".apk_all_data.version_name')
+          download_url = $(echo "$response" | jq -r '.app_detail_records."com.tencent.mobileqq".apk_all_data.url')
+          echo "获取到最新版本号: $version_name"
+          echo "直链下载地址: $download_url"
+          wget -nv -U "Mozilla/5.0" -O "QQ-$version_name-latest.apk" $download_url
+
       # 下载LSPatch
       - name: Download LSPatch 下载LSPatch
         run: gh release download -O LSPatch.jar --repo LSPosed/LSPatch --pattern '*.jar'
 
-      # 下载待修补的应用
-      - name: Download QQ 8.9.58 下载QQ 8.9.58
-      # 官方直链  run: wget -O QQ8.9.58. https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_8.9.58_64_HB2.apk
-        run: gh release download -O QQ-8.9.58.apk --repo Hakuin123/MQGA READY --pattern QQ_8.9.58_64_HB2.apk
-
-      # 使用GitHub CLI下载模块最新Release版本
+      # 下载模块
       - name: Download Modules 下载模块
         run: |
           gh release download -O QAuxiliary.apk --repo cinit/QAuxiliary     --pattern '*arm64.apk'
@@ -57,27 +66,11 @@ jobs:
           gh release download -O TSBattery.apk  --repo fankes/TSBattery     --pattern '*.apk'
           gh release download -O QQCleaner.apk  --repo KitsunePie/QQCleaner --pattern '*.apk'
 
-      # 开始修补应用
-      - name: Patch QQ 8.9.58 修补QQ 8.9.58
-        run: java -jar LSPatch.jar QQ-8.9.58.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk -l 2
-
-      - name: Download Latest QQ 下载最新版QQ
-        run: |
-          response=$(curl -s -X POST -H "Content-Type: application/json" -d '{"packagename":"com.tencent.mobileqq"}' https://upage.html5.qq.com/wechat-apkinfo)
-          response=$(echo "$response" | tr -cd '[:print:]')
-          version_name=$(echo "$response" | jq -r '.app_detail_records."com.tencent.mobileqq".apk_all_data.version_name')
-          download_url=$(echo "$response" | jq -r '.app_detail_records."com.tencent.mobileqq".apk_all_data.url')
-          echo "获取到最新版本号: $version_name"
-          echo "直链下载地址: $download_url"
-
-          wget -nv -U "Mozilla/5.0" -O "QQ-$version_name.apk" $download_url
-
-      # 开始修补应用
-      - name: Patch Latest QQ 修补最新版QQ
-        run: java -jar LSPatch.jar QQ-latest.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk -l 2
+      # 开始修补QQ
+      - name: Patch QQ 修补各版本QQ
+        run: java -jar LSPatch.jar QQ-*.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk -l 2
 
       # 获取模块版本信息
-
       - id: QAuxiliary
         uses: pozetroninc/github-action-get-latest-release@v0.7.0
         with:
