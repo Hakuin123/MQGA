@@ -56,8 +56,10 @@ jobs:
 
       # 下载LSPatch
       - name: Download LSPatch 下载LSPatch
-        run: gh release download -O LSPatch.jar --repo LSPosed/LSPatch --pattern '*.jar'
-
+        run: gh release download -O LSPatch.jar --repo LSPosed/LSPatch --pattern '*.
+        # JingMatrix 维护的 LSPatch 分支已适配 Android 15，若在高版本遇到兼容性问题可考虑使用，请取消注释下面这行并注释掉上面那行（直白）
+        # run: gh release download -O LSPatch.jar --repo JingMatrix/LSPatch --pattern '*.jar'
+        
       # 下载模块
       - name: Download Modules 下载模块
         run: |
