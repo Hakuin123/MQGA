@@ -1,14 +1,10 @@
 # MAKE QQ GREAT AGAIN!
 
-欢迎，这里是MQGA研究院[^1]。“让QQ再次伟大！”
-
-Release 构建状态：![状态：default](https://github.com/Hakuin123/MQGA/actions/workflows/default.yml/badge.svg)
-
-MQGA 修补包下载次数：![download](https://img.shields.io/github/downloads/Hakuin123/MQGA/total?logo=github)
-
 ## 这个项目是做什么的
 
-使用 [LSPatch](https://github.com/LSPosed/LSPatch) 和 [GitHub Action](https://github.com/features/actions) 自动化修补 QQ Android，并在其中嵌入以下 Xposed/LSPosed 模块：
+~~**“让QQ再次伟大！”**~~
+
+本项目使用 [LSPatch](https://github.com/LSPosed/LSPatch) 和 [GitHub Action](https://github.com/features/actions) 自动化修补 QQ Android，并在其中嵌入以下 Xposed/LSPosed 模块：
 
 - [QAuxiliary](https://github.com/cinit/QAuxiliary)
 - [XAutoDaily](https://github.com/LuckyPray/XAutoDaily)
@@ -19,16 +15,19 @@ MQGA 修补包下载次数：![download](https://img.shields.io/github/downloads
 
 ## 获取方式
 
-### QQ Android 最新版 / 8.9.58
-请在 [Releases](https://github.com/Hakuin123/MQGA/releases) 下载已修补完成的最新版或 8.9.58 版本QQ。
+> [!CAUTION]
+> 近期 QQ 官方加大了对模块 Hook 检测的力度，使用模块可能导致您的账号被**异常下线**、**限制社交功能**乃至**一定程度的封禁**，请**自行**判断您是否要使用模块。
 
-### 想要在每次修补完成时获得通知？
-1. [登录 GitHub 账户](https://github.com/signin)
-2. 在本项目项目页面上方找到`Watch`（眼睛图标）并点击
-3. 选择`Custom`
-4. 勾选`Releases`并点击`Apply`以应用
+### 下载经过修补的 QQ Android 最新版 / 8.9.58
+请在 [Releases](https://github.com/Hakuin123/MQGA/releases) 下载已修补完成的最新版或 8.9.58 版本QQ。最新Release 构建状态：![状态：default](https://github.com/Hakuin123/MQGA/actions/workflows/default.yml/badge.svg) 
 
-完成！接下来每当有新的 [Release](https://github.com/Hakuin123/MQGA/releases) 发布时，您将收到来自 GitHub 的提醒！该方法适用于任意 GitHub 项目
+> [!TIP]
+> 想要在每次修补完成时获得通知？
+> 1. [登录 GitHub 账户](https://github.com/signin)
+> 2. 在本项目项目页面上方找到`Watch`（眼睛图标）并点击
+> 3. 选择`Custom`
+> 4. 勾选`Releases`并点击`Apply`以应用
+> 完成！接下来每当有新的 [Release](https://github.com/Hakuin123/MQGA/releases) 发布时，您将收到来自 GitHub 的提醒！该方法适用于任意 GitHub 项目
 
 ### 修补自定义 QQ Android 版本（单次）
 <details><summary>点击这里展开教程</summary>
@@ -50,7 +49,7 @@ MQGA 修补包下载次数：![download](https://img.shields.io/github/downloads
 </p>
 </details>
 
-> 免责声明：本仓库仅提供服务整合，QQ 安装包及模块均由第三方提供，如在使用中出现问题，本仓库不对此负任何责任。下载本仓库提供的资源即表示同意上述声明。
+> 免责声明：本项目仅提供服务整合，QQ 安装包及模块均由第三方提供，如在使用中出现问题，本项目不对此负任何责任。使用/下载本项目或本项目提供的资源即表示同意上述声明。
 
 
 ## 计划实现的功能
