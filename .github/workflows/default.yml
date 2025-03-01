@@ -6,11 +6,8 @@ run-name: Patch QQ
 on:
   schedule:
   - cron: '30 1 * * 4'
-  # Runs at 01:30, only on Thursday.
-  # Actions schedules run at most every 5 minutes using UTC time.
-  # “肯德基疯狂星期四”仅限9:30-23:00供应
-  # 上海市、广东省、福建省、海南省、广西壮族自治区等部分地区仅限10:30-23:00供应，具体以餐厅实际营业时间为准。
-
+  # Runs at 01:30 (UTC time), only on Thursday
+  # “肯德基疯狂星期四”仅限9:30-23:00供应，具体以餐厅实际营业时间为准。
   # https://docs.github.com/zh/actions/using-workflows/events-that-trigger-workflows#repository_dispatch
   repository_dispatch:
     types: [release]
@@ -22,8 +19,7 @@ on:
   # 允许手动运行工作流
   workflow_dispatch:
 
-  # 新增Star时立即运行
-  # 注意：此项不应长期保持开启！
+  # 新增 Star 时立即运行
   # watch:
   #   types: [started]
 
@@ -31,35 +27,147 @@ env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  build:
+  check-updates:
+    name: Version Checker 版本检查
     runs-on: ubuntu-latest
+    outputs:
+      build_needed: ${{ steps.version_check.outputs.build_needed }}
+      QQ_version: ${{ steps.get_qq_version.outputs.QQ_version }}
+      QAuxiliary_version: ${{ steps.QAuxiliary.outputs.release }}
+      XAutoDaily_version: ${{ steps.XAutoDaily.outputs.release }}
+      TSBattery_version: ${{ steps.TSBattery.outputs.release }}
+      QQCleaner_version: ${{ steps.QQCleaner.outputs.release }}
+      LSPatch_version: ${{ steps.LSPatch.outputs.release }}
+      
+      QAuxiliary_description: ${{ steps.QAuxiliary.outputs.description }}
+      XAutoDaily_description: ${{ steps.XAutoDaily.outputs.description }}
+      TSBattery_description: ${{ steps.TSBattery.outputs.description }}
+      QQCleaner_description: ${{ steps.QQCleaner.outputs.description }}
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
+      - uses: actions/checkout@v4
+
+      # 模块版本检测
+      - id: QAuxiliary
+        uses: pozetroninc/github-action-get-latest-release@v0.8.0
         with:
-          distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '17'
+          repository: cinit/QAuxiliary
+          excludes: prerelease, draft
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Download Custom QQ 下载自定义版本QQ
-      # 官方直链：https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_8.9.58_64_HB2.apk
-        run: gh release download -O QQ-8.9.58.apk --repo Hakuin123/MQGA READY --pattern QQ_8.9.58_64_HB2.apk
+      - id: XAutoDaily
+        uses: pozetroninc/github-action-get-latest-release@v0.8.0
+        with:
+          repository: LuckyPray/XAutoDaily
+          excludes: prerelease, draft
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Download Latest QQ 下载最新版QQ
+      - id: TSBattery
+        uses: pozetroninc/github-action-get-latest-release@v0.8.0
+        with:
+          repository: fankes/TSBattery
+          excludes: prerelease, draft
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: QQCleaner
+        uses: pozetroninc/github-action-get-latest-release@v0.8.0
+        with:
+          repository: KitsunePie/QQCleaner
+          excludes: prerelease, draft
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: LSPatch
+        uses: pozetroninc/github-action-get-latest-release@v0.8.0
+        with:
+          repository: LSPosed/LSPatch
+          excludes: prerelease, draft
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get QQ Version 获取 QQ 版本
+        id: get_qq_version
         run: |
           response=$(curl -s -X POST -H "Content-Type: application/json" -d '{"packagename":"com.tencent.mobileqq"}' https://upage.html5.qq.com/wechat-apkinfo)
-          response=$(echo "$response" | tr -cd '[:print:]')
-          version_name=$(echo "$response" | jq -r '.app_detail_records."com.tencent.mobileqq".apk_all_data.version_name')
-          download_url=$(echo "$response" | jq -r '.app_detail_records."com.tencent.mobileqq".apk_all_data.url')
-          echo "获取到最新版本号: $version_name"
-          echo "直链下载地址: $download_url"
-          wget -nv -U "Mozilla/5.0" -O "QQ-$version_name-latest.apk" $download_url
+          clean_response=$(echo "$response" | tr -cd '[:print:]')
+          version_name=$(echo "$clean_response" | jq -r '.app_detail_records."com.tencent.mobileqq".apk_all_data.version_name')
+          echo "QQ_version=$version_name" >> $GITHUB_OUTPUT
+
+      # 版本比对逻辑
+      - name: Version Comparison 版本对比
+        id: version_check
+        run: |
+          # 获取历史版本号记录
+          gh release download -O versions.json --pattern 'versions.json' || echo "{}" > versions.json
+
+          # 生成当前版本号数据
+          current_versions=$(jq -n \
+            --arg QQ_version "${{ steps.get_qq_version.outputs.QQ_version }}" \
+            --arg QAuxiliary_version "${{ steps.QAuxiliary.outputs.release }}" \
+            --arg XAutoDaily_version "${{ steps.XAutoDaily.outputs.release }}" \
+            --arg TSBattery_version "${{ steps.TSBattery.outputs.release }}" \
+            --arg QQCleaner_version "${{ steps.QQCleaner.outputs.release }}" \
+            --arg LSPatch_version "${{ steps.LSPatch.outputs.release }}" \
+            '{
+              QQ: $QQ_version,
+              QAuxiliary: $QAuxiliary_version,
+              XAutoDaily: $XAutoDaily_version,
+              TSBattery: $TSBattery_version,
+              QQCleaner: $QQCleaner_version,
+              LSPatch: $LSPatch_version
+            }')
+
+          # 版本比对
+          if [[ "$(cat versions.json)" == "$current_versions" ]]; then
+            echo "::notice::All versions are up-to-date 所有版本均为最新版"
+            echo "build_needed=false" >> $GITHUB_OUTPUT
+          else
+            echo "::notice::New version detected 检测到新版本"
+            echo "$current_versions" > versions.json
+            echo "build_needed=true" >> $GITHUB_OUTPUT
+          fi
+
+      # 上传版本信息记录文件
+      - uses: actions/upload-artifact@v4
+        if: steps.version_check.outputs.build_needed == 'true'
+        with:
+            name: version-info
+            path: versions.json
+
+
+  build:
+    name: Build Release 构建 Releases
+    needs: check-updates
+    if: needs.check-updates.outputs.build_needed == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # 下载版本记录资源
+      - uses: actions/download-artifact@v4
+        with:
+          name: version-info
+          path: .
+
+      - name: Download Custom QQ 下载自定义 QQ 版本
+        run: gh release download -O QQ-8.9.58.apk --repo Hakuin123/MQGA READY --pattern QQ_8.9.58_64_HB2.apk
+        # 可以更改此处以自定义需要修补的 QQ 版本，可以添加多个（统一打包并上传）
+
+      - name: Download Latest QQ 下载最新版 QQ
+        run: |
+          wget -U "Mozilla/5.0" -O "QQ-${{ needs.check-updates.outputs.QQ_version }}-latest.apk" \
+            $(curl -s -X POST -H "Content-Type: application/json" -d '{"packagename":"com.tencent.mobileqq"}' \
+            https://upage.html5.qq.com/wechat-apkinfo | tr -cd '[:print:]' | jq -r '.app_detail_records."com.tencent.mobileqq".apk_all_data.url')
 
       # 下载LSPatch
       - name: Download LSPatch 下载LSPatch
-        run: gh release download -O LSPatch.jar --repo LSPosed/LSPatch --pattern '*.
-        # JingMatrix 维护的 LSPatch 分支已适配 Android 15，若在高版本遇到兼容性问题可考虑使用，请取消注释下面这行并注释掉上面那行（直白）
-        # run: gh release download -O LSPatch.jar --repo JingMatrix/LSPatch --pattern '*.jar'
-        
+        run: gh release download -O LSPatch.jar --repo LSPosed/LSPatch --pattern '*.jar'
+        # JingMatrix 维护的 LSPatch 分支已适配 Android 15，若在高版本遇到兼容性问题可考虑使用
+        # 将字段 LSPosed/LSPatch 更改为 JingMatrix/LSPatch 即可，建议使用全文查找替换（使用该分支产生的后果请自负）
+
       # 下载模块
       - name: Download Modules 下载模块
         run: |
@@ -68,68 +176,47 @@ jobs:
           gh release download -O TSBattery.apk  --repo fankes/TSBattery     --pattern '*.apk'
           gh release download -O QQCleaner.apk  --repo KitsunePie/QQCleaner --pattern '*.apk'
 
-      # 开始修补QQ
-      - name: Patch QQ 修补各版本QQ
+      # 开始修补 QQ
+      - name: Patch QQ 修补各版本 QQ
         run: java -jar LSPatch.jar QQ-*.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk -l 2
 
-      # 获取模块版本信息
-      - id: QAuxiliary
-        uses: pozetroninc/github-action-get-latest-release@v0.7.0
-        with:
-          repository: cinit/QAuxiliary
-          excludes: prerelease, draft
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - id: XAutoDaily
-        uses: pozetroninc/github-action-get-latest-release@v0.7.0
-        with:
-          repository: LuckyPray/XAutoDaily
-          excludes: prerelease, draft
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - id: TSBattery
-        uses: pozetroninc/github-action-get-latest-release@v0.7.0
-        with:
-          repository: fankes/TSBattery
-          excludes: prerelease, draft
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - id: QQCleaner
-        uses: pozetroninc/github-action-get-latest-release@v0.7.0
-        with:
-          repository: KitsunePie/QQCleaner
-          excludes: prerelease, draft
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - id: LSPatch
-        uses: pozetroninc/github-action-get-latest-release@v0.7.0
-        with:
-          repository: LSPosed/LSPatch
-          excludes: prerelease, draft
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      # 发布Release
-      - name: Draft Release 发布Release
-        uses: softprops/action-gh-release@v1
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             *-lspatched.apk
+            versions.json
           tag_name: ${{ github.run_id }} # 存储库中每个工作流运行的唯一编号
-          name: QQ Releases ${{ github.run_number }} # 仓库中特定工作流程每个运行的唯一编号（从 1 开始递增）。
+          name: QQ Release ${{ needs.check-updates.outputs.QQ_version }} # 使用 QQ 版本号作为标题
           body: |
-            仅在此发布最新修补的Release版本，标有“latest”的是基于最新版本QQ修补的版本。
-
-            ### 本次打包使用的模块
-            | 模块名称 | 模块版本 | 查看项目 |
+            ### 本次修补使用的项目（不含自定义 QQ 版本）
+            | 项目名称 | 对应版本 | 查看项目 |
             | ------- | -------- | ------- |
-            | QAuxiliary | ${{ steps.QAuxiliary.outputs.release }} | [点击跳转](https://github.com/cinit/QAuxiliary) |
-            | XAutoDaily | ${{ steps.XAutoDaily.outputs.release }} | [点击跳转](https://github.com/LuckyPray/XAutoDaily) |
-            | TSBattery  | ${{ steps.TSBattery.outputs.release }}  | [点击跳转](https://github.com/fankes/TSBattery) |
-            | QQCleaner  | ${{ steps.QQCleaner.outputs.release }}  | [点击跳转](https://github.com/KitsunePie/QQCleaner) |
+            | QQ 最新版本 | ${{ needs.check-updates.outputs.QQ_version }}         | [QQ 官网](https://im.qq.com/index)|
+            | QAuxiliary | ${{ needs.check-updates.outputs.QAuxiliary_version }} | [GitHub](https://github.com/cinit/QAuxiliary) |
+            | XAutoDaily | ${{ needs.check-updates.outputs.XAutoDaily_version }} | [GitHub](https://github.com/LuckyPray/XAutoDaily) |
+            | TSBattery  | ${{ needs.check-updates.outputs.TSBattery_version }}  | [GitHub](https://github.com/fankes/TSBattery) |
+            | QQCleaner  | ${{ needs.check-updates.outputs.QQCleaner_version }}  | [GitHub](https://github.com/KitsunePie/QQCleaner) |
+            | LSPatch    | ${{ needs.check-updates.outputs.LSPatch_version }}    | [GitHub](https://github.com/LSPosed/LSPatch)]
 
-            <details><summary>点击展开模块更新详情</summary>
-            #### QAuxiliary
-            ${{ steps.QAuxiliary.outputs.description }}
-            #### XAutoDaily
-            ${{ steps.XAutoDaily.outputs.description }}
-            #### TSBattery
-            ${{ steps.TSBattery.outputs.description }}
-            #### QQCleaner
-            ${{ steps.QQCleaner.outputs.description }}
-            #### [LSPatch](https://github.com/LSPosed/LSPatch)版本：${{ steps.LSPatch.outputs.release }}
+            <details><summary>点击展开模块更新日志</summary>
+            #### QAuxiliary<br>
+            ${{ needs.check-updates.outputs.QAuxiliary_description }}
+            #### XAutoDaily<br>
+            ${{ needs.check-updates.outputs.XAutoDaily_description }}
+            #### TSBattery<br>
+            ${{ needs.check-updates.outputs.TSBattery_description }}
+            #### QQCleaner<br>
+            ${{ needs.check-updates.outputs.QQCleaner_description }}
+            </details>
+
+            ### 发行说明
+            您应该会在页面下方的 Assets 看到如下文件：
+            - QQ-`版本号`-`LSPatch 内部版本号`-lspatched.apk
+                此为自定义版本号修补的 QQ Android 版本
+            - QQ-${{ needs.check-updates.outputs.QQ_version }}-latest-`LSPatch 内部版本号`-lspatched.apk
+                此为基于 QQ Android 当前最新版本修补的版本
+            - versions.json
+                此为本次修补使用的版本信息
+
+            **Have fun!**

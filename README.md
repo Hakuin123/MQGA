@@ -2,16 +2,35 @@
 
 欢迎，这里是MQGA研究院[^1]。“让QQ再次伟大！”
 
-QQ最新 & 8.9.58 状态：![状态：default](https://github.com/Hakuin123/MQGA/actions/workflows/default.yml/badge.svg)
+Release 构建状态：![状态：default](https://github.com/Hakuin123/MQGA/actions/workflows/default.yml/badge.svg)
 
-MQGA修补包下载次数：![download](https://img.shields.io/github/downloads/Hakuin123/MQGA/total?logo=github)
+MQGA 修补包下载次数：![download](https://img.shields.io/github/downloads/Hakuin123/MQGA/total?logo=github)
 
-## “为什么追我？”“我要MQGA！”
+## 这个项目是做什么的
 
-### QQ Android 最新版/8.9.58
-请在[Releases](https://github.com/Hakuin123/MQGA/releases)下载已打包完成的最新版或8.9.58版本QQ。
+使用 [LSPatch](https://github.com/LSPosed/LSPatch) 和 [GitHub Action](https://github.com/features/actions) 自动化修补 QQ Android，并在其中嵌入以下 Xposed/LSPosed 模块：
 
-### 修补自定义 QQ Android 版本
+- [QAuxiliary](https://github.com/cinit/QAuxiliary)
+- [XAutoDaily](https://github.com/LuckyPray/XAutoDaily)
+- [TSBattery](https://github.com/fankes/TSBattery)
+- [QQ瘦身（QQCleaner）](https://github.com/KitsunePie/QQCleaner)
+
+（如果发现有更多好玩好用的模块，欢迎[提交 Issue 推荐给我们](https://github.com/Hakuin123/MQGA/issues/new)。）
+
+## 获取方式
+
+### QQ Android 最新版 / 8.9.58
+请在 [Releases](https://github.com/Hakuin123/MQGA/releases) 下载已修补完成的最新版或 8.9.58 版本QQ。
+
+### 想要在每次修补完成时获得通知？
+1. [登录 GitHub 账户](https://github.com/signin)
+2. 在本项目项目页面上方找到`Watch`（眼睛图标）并点击
+3. 选择`Custom`
+4. 勾选`Releases`并点击`Apply`以应用
+
+完成！接下来每当有新的 [Release](https://github.com/Hakuin123/MQGA/releases) 发布时，您将收到来自 GitHub 的提醒！该方法适用于任意 GitHub 项目
+
+### 修补自定义 QQ Android 版本（单次）
 <details><summary>点击这里展开教程</summary>
 <p>
 
@@ -33,46 +52,33 @@ MQGA修补包下载次数：![download](https://img.shields.io/github/downloads/
 
 > 免责声明：本仓库仅提供服务整合，QQ 安装包及模块均由第三方提供，如在使用中出现问题，本仓库不对此负任何责任。下载本仓库提供的资源即表示同意上述声明。
 
-## 我们做了什么
-
-我们借助[LSPatch](https://github.com/LSPosed/LSPatch)的“便携模式”修补 QQ Android，并在其中嵌入以下好用的开源模块：
-
-- [QAuxiliary](https://github.com/cinit/QAuxiliary)
-- [XAutoDaily](https://github.com/LuckyPray/XAutoDaily)
-- [TSBattery](https://github.com/fankes/TSBattery)
-- [QQ瘦身（QQCleaner）](https://github.com/KitsunePie/QQCleaner)
-
-（如果发现有更多好玩好用的模块，欢迎[发Issue推荐给我们](https://github.com/Hakuin123/MQGA/issues/new)。）
 
 ## 计划实现的功能
 
-- [x] 借助GitHub Actions修补QQ #1
-- [x] 修补时自动下载最新版本QQ（使用固定连接） #2
-- [ ] 当模块更新时自动重新修补
-- [ ] 当QQ更新时自动重新修补
-- [ ] 重修补后邮件通知使用者
-- [x] Releases版本号迭代
+- [x] 借助 GitHub Actions 修补QQ #1
+- [x] 修补时自动下载最新版本 QQ（使用固定连接） #2
+- [x] ~~当 QQ / 模块更新时自动重新修补~~ 固定每周检查更新并重新修补
 
 
 ## 推荐的 QQ Android 版本
 
+> 以下版本无论是否使用模块均可获得相对较好的体验，欢迎尝试
+
 ### [QQ NT（当前最新版）](https://im.qq.com/index/#downloadAnchor)
-最新版QQ基于 [Election](https://www.electronjs.org/zh/) 重写，性能得到大幅提升
+最新版 QQ 基于 [Election](https://www.electronjs.org/zh/) 重构，同时更改了聊天消息存储结构，性能得到大幅提升，若未尝试过 8.9.63 及以上版本则极力推荐尝试
 
-### [QQ 8.9.58(补包2)](https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_8.9.58_64_HB2.apk)
-最后一个不基于 QQ NT 的版本
+### [QQ 8.9.58.11175](https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_8.9.58_64_HB2.apk)
+最后一个**不**基于 QQ_NT 的版本
 
-### [QQ 8.8.50](https://dldir1.qq.com/qqfile/qq/expcenter/1458/28d2b3f249db11ec819ad00d4e61d76c/qq_8.8.50.6735_rb4227cab_v2324_release.apk)
+### [QQ 8.8.50.10650](https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_8.9.50.10650_537155547_64.apk)
 最后一个不是 3A 大作（未内置虚幻引擎 4，无超级 QQ 秀）的版本
 
-### [TIM（当前最新版）](https://office.qq.com/download.html)
-极为简洁的版本，底包基于 QQ 8.3.9
+### [TIM NT（当前最新版）](https://office.qq.com/download.html)
+极为简洁的 QQ 官方修改版，4.0.0 后底包基于 QQ 9.0.95（QQ NT 版本）
 
-### [TIM 3.4.8]()
-无云控，邮箱入口不会被移除，日历功能保留（但有反馈说无法登录）
+### [TIM 3.4.8](https://downv6.qq.com/qqweb/QQ_1/android_apk/tim_3.4.8.3108_537129495_64.apk)
+（相对没那么推荐）底包基于 QQ 8.3.9 ，邮箱入口不会被云控移除，日历功能也保留（但有反馈说无法登录）
 
 ## 更好地食用
 
 配合 GitHub 镜像站/加速下载站食用更香。
-
-另请参阅：https://github.com/librarycloud/list
