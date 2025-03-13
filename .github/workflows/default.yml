@@ -12,16 +12,12 @@ on:
   repository_dispatch:
     types: [release]
 
-  # 仅供测试：每次提交时运行工作流
+  # 每次提交时运行工作流
   push:
     branches: ["main"]
 
   # 允许手动运行工作流
   workflow_dispatch:
-
-  # 新增 Star 时立即运行
-  # watch:
-  #   types: [started]
 
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -46,6 +42,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set ENV values from YAML
+        uses: dcarbone/yaml-to-env-action@v3
+        with:
+          yaml-file: config.yml
 
       # 模块版本检测
       - id: QAuxiliary
@@ -79,7 +80,7 @@ jobs:
       - id: LSPatch
         uses: pozetroninc/github-action-get-latest-release@v0.8.0
         with:
-          repository: LSPosed/LSPatch
+          repository: ${{ ENV.CUSTOM_LSPATCH_REPO }}
           excludes: prerelease, draft
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -125,6 +126,13 @@ jobs:
             echo "build_needed=true" >> $GITHUB_OUTPUT
           fi
 
+      # 检查是否强制启用修补
+      - name: Force Mode Check 强制修补检查
+        if: ENV.FORCE == 'true'
+        run: |
+          echo "build_needed=true" >> $GITHUB_OUTPUT
+          echo "::notice::Forced mode: enabled 强制修补：开启"
+
       # 上传版本信息记录文件
       - uses: actions/upload-artifact@v4
         if: steps.version_check.outputs.build_needed == 'true'
@@ -145,6 +153,11 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
+      - name: Set ENV values from YAML
+        uses: dcarbone/yaml-to-env-action@v3
+        with:
+          yaml-file: config.yml
+
       # 下载版本记录资源
       - uses: actions/download-artifact@v4
         with:
@@ -152,20 +165,22 @@ jobs:
           path: .
 
       - name: Download Custom QQ 下载自定义 QQ 版本
-        run: gh release download -O QQ-8.9.58.apk --repo Hakuin123/MQGA READY --pattern QQ_8.9.58_64_HB2.apk
+        if: ENV.CUSTOM_ENABLE == 'true'
+        run: |
+          wget -q -U "Mozilla/5.0" -O QQ-custom.apk "${{ ENV.CUSTOM_QQ_DOWNLOAD_LINK }}"
+        # gh release download -O QQ-8.9.58.apk --repo Hakuin123/MQGA READY --pattern QQ_8.9.58_64_HB2.apk
         # 可以更改此处以自定义需要修补的 QQ 版本，可以添加多个（统一打包并上传）
 
       - name: Download Latest QQ 下载最新版 QQ
+        if: ENV.LATEST_ENABLE == 'true'
         run: |
-          wget -U "Mozilla/5.0" -O "QQ-${{ needs.check-updates.outputs.QQ_version }}-latest.apk" \
+          wget -q -U "Mozilla/5.0" -O "QQ-${{ needs.check-updates.outputs.QQ_version }}-latest.apk" \
             $(curl -s -X POST -H "Content-Type: application/json" -d '{"packagename":"com.tencent.mobileqq"}' \
             https://upage.html5.qq.com/wechat-apkinfo | tr -cd '[:print:]' | jq -r '.app_detail_records."com.tencent.mobileqq".apk_all_data.url')
 
       # 下载LSPatch
       - name: Download LSPatch 下载LSPatch
-        run: gh release download -O LSPatch.jar --repo LSPosed/LSPatch --pattern '*.jar'
-        # JingMatrix 维护的 LSPatch 分支已适配 Android 15，若在高版本遇到兼容性问题可考虑使用
-        # 将字段 LSPosed/LSPatch 更改为 JingMatrix/LSPatch 即可，建议使用全文查找替换（使用该分支产生的后果请自负）
+        run: gh release download -O LSPatch.jar --repo ${{ ENV.CUSTOM_LSPATCH_REPO }} --pattern '*.jar'
 
       # 下载模块
       - name: Download Modules 下载模块
@@ -175,9 +190,19 @@ jobs:
           gh release download -O TSBattery.apk  --repo fankes/TSBattery     --pattern '*.apk'
           gh release download -O QQCleaner.apk  --repo KitsunePie/QQCleaner --pattern '*.apk'
 
+      - name: Download Custom Modules 下载自定义模块
+        if: ENV.CUSTOM_MODULES_CUSTOM == 'true'
+        run: wget -q -U "Mozilla/5.0" -O custom-module.apk "${{ ENV.CUSTOM_MODULES_DOWNLOAD_LINK }}"
+
       # 开始修补 QQ
       - name: Patch QQ 修补各版本 QQ
-        run: java -jar LSPatch.jar QQ-*.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk -l 2
+        run: |
+         if "${{ ENV.CUSTOM_MODULES_CUSTOM }}" == "true" ; then
+           java -jar LSPatch.jar QQ-*.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk,custom-module.apk -l 2
+         else
+           java -jar LSPatch.jar QQ-*.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk -l 2
+         fi
+        # 这个写法烂透了但是只是权宜之计，等到选择启用模块列表功能完成后这里的逻辑也将被替换，或者欢迎 PR
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
@@ -188,7 +213,7 @@ jobs:
           tag_name: ${{ github.run_id }} # 存储库中每个工作流运行的唯一编号
           name: QQ Release ${{ needs.check-updates.outputs.QQ_version }} # 使用 QQ 版本号作为标题
           body: |
-            ### 本次修补使用的项目（不含自定义 QQ 版本）
+            ### 本次修补使用的项目（不含自定义 QQ/模块）
             | 项目名称 | 对应版本 | 查看项目 |
             | ------- | -------- | ------- |
             | QQ 最新版本 | ${{ needs.check-updates.outputs.QQ_version }}         | [QQ 官网](https://im.qq.com/index)|
@@ -196,7 +221,7 @@ jobs:
             | XAutoDaily | ${{ needs.check-updates.outputs.XAutoDaily_version }} | [GitHub](https://github.com/LuckyPray/XAutoDaily) |
             | TSBattery  | ${{ needs.check-updates.outputs.TSBattery_version }}  | [GitHub](https://github.com/fankes/TSBattery) |
             | QQCleaner  | ${{ needs.check-updates.outputs.QQCleaner_version }}  | [GitHub](https://github.com/KitsunePie/QQCleaner) |
-            | LSPatch    | ${{ needs.check-updates.outputs.LSPatch_version }}    | [GitHub](https://github.com/LSPosed/LSPatch)]
+            | LSPatch    | ${{ needs.check-updates.outputs.LSPatch_version }}    | [GitHub](https://github.com/${{ ENV.CUSTOM_LSPATCH_REPO }})
 
             <details><summary>点击展开模块更新日志</summary>
             #### QAuxiliary<br>
@@ -215,6 +240,7 @@ jobs:
                 此为自定义版本号修补的 QQ Android 版本
             - QQ-${{ needs.check-updates.outputs.QQ_version }}-latest-`LSPatch 内部版本号`-lspatched.apk
                 此为基于 QQ Android 当前最新版本修补的版本
+            > 基于最新版 QQ 修补的版本，部分模块功能可能因为未适配而失效，请酌情使用
             - versions.json
                 此为本次修补使用的版本信息
 
