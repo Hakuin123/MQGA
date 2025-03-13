@@ -5,7 +5,7 @@ run-name: Patch QQ
 # 控制工作流何时运行
 on:
   schedule:
-  - cron: '30 1 * * 4'
+    - cron: "30 1 * * 4"
   # Runs at 01:30 (UTC time), only on Thursday
   # “肯德基疯狂星期四”仅限9:30-23:00供应，具体以餐厅实际营业时间为准。
   # https://docs.github.com/zh/actions/using-workflows/events-that-trigger-workflows#repository_dispatch
@@ -14,7 +14,7 @@ on:
 
   # 仅供测试：每次提交时运行工作流
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
   # 允许手动运行工作流
   workflow_dispatch:
@@ -38,7 +38,7 @@ jobs:
       TSBattery_version: ${{ steps.TSBattery.outputs.release }}
       QQCleaner_version: ${{ steps.QQCleaner.outputs.release }}
       LSPatch_version: ${{ steps.LSPatch.outputs.release }}
-      
+
       QAuxiliary_description: ${{ steps.QAuxiliary.outputs.description }}
       XAutoDaily_description: ${{ steps.XAutoDaily.outputs.description }}
       TSBattery_description: ${{ steps.TSBattery.outputs.description }}
@@ -129,9 +129,8 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: steps.version_check.outputs.build_needed == 'true'
         with:
-            name: version-info
-            path: versions.json
-
+          name: version-info
+          path: versions.json
 
   build:
     name: Build Release 构建 Releases
@@ -143,8 +142,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: "temurin"
+          java-version: "17"
 
       # 下载版本记录资源
       - uses: actions/download-artifact@v4
