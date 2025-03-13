@@ -18,8 +18,8 @@
 > [!CAUTION]
 > 近期 QQ 官方加大了对模块 Hook 检测的力度，使用模块可能导致您的账号被**异常下线**、**限制社交功能**乃至**一定程度的封禁**，请**自行**判断您是否要使用模块。
 
-### 下载经过修补的 QQ Android 最新版 / 8.9.58
-请在 [Releases](https://github.com/Hakuin123/MQGA/releases) 下载已修补完成的最新版或 8.9.58 版本QQ。最新Release 构建状态：![状态：default](https://github.com/Hakuin123/MQGA/actions/workflows/default.yml/badge.svg) 
+### 下载经过修补的 QQ Android 最新版 / 9.1.31
+请在 [Releases](https://github.com/Hakuin123/MQGA/releases) 下载已修补完成的最新版或 9.1.31 版本QQ。最新Release 构建状态：![状态：default](https://github.com/Hakuin123/MQGA/actions/workflows/default.yml/badge.svg) 
 
 > [!TIP]
 > 想要在每次修补完成时获得通知？
@@ -29,22 +29,44 @@
 > 4. 勾选`Releases`并点击`Apply`以应用
 > 完成！接下来每当有新的 [Release](https://github.com/Hakuin123/MQGA/releases) 发布时，您将收到来自 GitHub 的提醒！该方法适用于任意 GitHub 项目
 
-### 修补自定义 QQ Android 版本（单次）
+
+### 修补自定义 QQ Android 版本（推荐）
 <details><summary>点击这里展开教程</summary>
 <p>
 
 1. [登录 GitHub 账户](https://github.com/signin)，然后 [Fork](https://github.com/Hakuin123/MQGA/fork) 此仓库
-2. 在**你自己 fork 完成的仓库**（带有你自己的用户名）页面顶部点击`Actions`
-3. （点开`All workflows`后）点击`Custom`
-4. 点击蓝色`#DDF4FF`横幅`This workflow has a workflow_dispatch event trigger.`右边的`Run workflow`
+> 被Fork的仓库的 Action 默认为关闭状态，需要手动启用
+2. 在**你自己 Fork 完成的仓库**（带有你自己的用户名）页面顶部点击`Actions`，并点击`I understand my workflows, go ahead and enable them`以启用该仓库的 Actions 功能
+3. 回到仓库主界面，按照注释编辑`config.yml`文件并`commit`
+
+此时应该会自动开始运行，恭喜你完成了全部的步骤！等待 Action 运行完成后，您将在 **Releases** 看到修补完成的安装包
+
+请注意，该项目会在**每周四**自动检查 QQ 和模块版本更新，如果检测到版本更新会自动按照配置进行修补并发布 Releases
+
+> GitHub 会自动禁用 60 天没有任何活动的仓库的 Actions，届时会发出通知（比如邮件），按照通知手动启用 Actions 即可。
+
+</p>
+</details>
+
+
+
+### 尝试修补一次自定义 QQ Android 版本（不再维护）
+<details><summary>点击这里展开教程</summary>
+<p>
+> 本功能已被开发者停止维护，后续可能被整合，但仍欢迎提交 PR
+
+1. [登录 GitHub 账户](https://github.com/signin)，然后 [Fork](https://github.com/Hakuin123/MQGA/fork) 此仓库
+2. 在**你自己 Fork 完成的仓库**（带有你自己的用户名）页面顶部点击`Actions`
+3. 点击`All workflows` -> 点击`Custom`
+4. 点击横幅`This workflow has a workflow_dispatch event trigger.`右边的`Run workflow`
 5. 在弹出的窗口内填写下列内容：
   - **自定义版本号**  输入你所自定义的 QQ Android 版本（仅作名称标识作用，是否正确填写对于实际修补无影响）
   - **指定下载链接**  输入 QQ/TIM Android 安装包直链
   - **模块版本通道**  选择使用正式版（default）还是测试版（CI）的模块
-6. 填写完成后点击绿色`#1F883D`的`Run workflow`并刷新页面，等待新增的工作流`Custom`的图标由黄色`#DBAB0A`变为绿色`#1F883D`，点开这个~~刚冒出来的花里胡哨变色的~~`Custom`
+6. 填写完成后点击`Run workflow`并刷新页面，等待新增的工作流`Custom`完成（图标由黄色变为绿色），点开这个~~刚冒出来的花里胡哨变色的~~`Custom`
 7. 在`Artifacts`找到修补完成的`.apk`文件，点击以下载（未登录状态下无法下载）
 
-> 若Actions执行失败（状态为红色`#D1242F`），请自行检查输入的安装包链接是否为直链，也就是说输入的链接在浏览器打开后能够自动下载安装包。可百度或在QQ官网自行获取直链。
+> 若 Actions 执行失败（状态为红色），请自行检查输入的安装包链接是否为直链，也就是说输入的链接在浏览器打开后能够自动下载安装包。可百度或在 QQ 官网自行获取直链。
 
 </p>
 </details>
