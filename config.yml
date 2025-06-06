@@ -6,7 +6,7 @@ custom:
   # 自定义 QQ 版本下载链接（需要是直链）
   # 请自行检查输入的安装包链接是否为直链，也就是说输入的链接在浏览器打开后能够自动下载安装包，可百度或在 QQ 官网自行获取
 
-  LSPatch_repo: "LSPosed/LSPatch"
+  LSPatch_repo: "JingMatrix/LSPatch"
   # 选择使用的 LSPatch 项目（需在 releases 中提供 .jar 文件）
   # JingMatrix 维护的 LSPatch 分支已适配 Android 15，若在高版本遇到兼容性问题可考虑使用
   # 将字符串 "LSPosed/LSPatch" 更改为 "JingMatrix/LSPatch" 即可（使用该分支产生的后果请自负）
