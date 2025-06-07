@@ -91,7 +91,7 @@
 ### [QQ 8.9.58.11175](https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_8.9.58_64_HB2.apk)
 最后一个**不**基于 QQ_NT 的版本
 
-### [QQ 8.8.50.10650](https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_8.9.50.10650_537155547_64.apk)
+### [QQ 8.8.50.6735](https://dldir1.qq.com/qqfile/qq/expcenter/1458/28d2b3f249db11ec819ad00d4e61d76c/qq_8.8.50.6735_rb4227cab_v2324_release.apk)
 最后一个不是 3A 大作（未内置虚幻引擎 4，无超级 QQ 秀）的版本
 
 ### [TIM NT（当前最新版）](https://office.qq.com/download.html)
