@@ -148,10 +148,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
         with:
           distribution: "temurin"
-          java-version: "17"
+          java-version: "21"
 
       - name: Set ENV values from YAML
         uses: dcarbone/yaml-to-env-action@v3
