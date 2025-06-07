@@ -9,9 +9,9 @@
 - [QAuxiliary](https://github.com/cinit/QAuxiliary)
 - [XAutoDaily](https://github.com/LuckyPray/XAutoDaily)
 - [TSBattery](https://github.com/fankes/TSBattery)
-- [QQ瘦身（QQCleaner）](https://github.com/KitsunePie/QQCleaner)
+- [QQCleaner](https://github.com/KitsunePie/QQCleaner)（暂未适配 QQ NT）
 
-（如果发现有更多好玩好用的模块，欢迎[提交 Issue 推荐给我们](https://github.com/Hakuin123/MQGA/issues/new)。）
+（如果发现有更多好玩好用的模块，欢迎[提交 Issue 推荐给我们](https://github.com/Hakuin123/MQGA/issues/new)）
 
 ## 获取方式
 

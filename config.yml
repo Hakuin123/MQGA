@@ -5,6 +5,7 @@ custom:
   QQ_download_link: "https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_9.1.31_64.apk"
   # 自定义 QQ 版本下载链接（需要是直链）
   # 请自行检查输入的安装包链接是否为直链，也就是说输入的链接在浏览器打开后能够自动下载安装包，可百度或在 QQ 官网自行获取
+  # 建议使用 Arm64 安装包，否则需手动更改 GitHUb Acion Workflow 配置文件中 QAuxiliary 的下载文件名后缀
 
   LSPatch_repo: "LSPosed/LSPatch"
   # 选择使用的 LSPatch 项目（需在 releases 中提供 .jar 文件）
@@ -12,10 +13,10 @@ custom:
   # 将字符串 "LSPosed/LSPatch" 更改为 "JingMatrix/LSPatch" 即可（使用该分支产生的后果请自负）
 
   modules:
-    # 示例：下载 MicroBlock 的 TGStickerProvider（参见：https://t.me/microblock_pub/159）
-    custom: true     # 选项：true | false
+    # 示例：下载 FunBox（https://github.com/Xposed-Modules-Repo/have.fun）
+    custom: false     # 选项：true | false
     # 是否启用自定义模块下载
-    download_link: "https://github.com/Hakuin123/MQGA/releases/download/READY/TGStickerProvider-0.2.1.apk"
+    download_link: "https://github.com/Xposed-Modules-Repo/have.fun/releases/download/1067-v1067/FunBox_v1067.Apk"
     # 自定义模块下载链接（暂时仅支持单个），该模块将在修补时一同加入修补
   
   # （待开发功能）选择启用模块列表
