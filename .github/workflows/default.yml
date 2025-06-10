@@ -207,7 +207,7 @@ jobs:
         # 这个写法烂透了但是只是权宜之计，等到选择启用模块列表功能完成后这里的逻辑也将被替换，或者欢迎 PR
 
       - name: Create Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v2.3.0
         with:
           files: |
             *-lspatched.apk
