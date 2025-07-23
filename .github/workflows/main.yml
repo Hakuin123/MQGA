@@ -153,6 +153,8 @@ jobs:
     needs: check-updates
     if: needs.check-updates.outputs.patch_needed == 'true'
     runs-on: ubuntu-latest
+    outputs:
+      module_list: ${{ steps.patch_qq.outputs.module_list }}
 
     steps:
       - name: Checkout | 检出代码
@@ -179,7 +181,7 @@ jobs:
       - name: Download Custom QQ | 下载自定义 QQ 版本
         if: ENV.QQ_CUSTOM_ENABLE == 'true'
         run: |
-          wget -q -U "Mozilla/5.0" -O QQ-custom.apk "${{ ENV.QQ_CUSTOM_URL }}"
+          wget -q -U "Mozilla/5.0" -O QQ-${{ env.QQ_CUSTOM_VERSION }}.apk "${{ ENV.QQ_CUSTOM_URL }}"
 
       - name: Download Latest QQ | 下载最新版 QQ
         if: ENV.QQ_LATEST_ENABLE == 'true'
@@ -188,8 +190,8 @@ jobs:
             $(curl -s -X POST -H "Content-Type: application/json" -d '{"packagename":"com.tencent.mobileqq"}' \
             https://upage.html5.qq.com/wechat-apkinfo | tr -cd '[:print:]' | jq -r '.app_detail_records."com.tencent.mobileqq".apk_all_data.url')
 
-      # 下载LSPatch
-      - name: Download LSPatch | 下载LSPatch
+      # 下载 LSPatch
+      - name: Download LSPatch | 下载 LSPatch
         run: gh release download -O LSPatch.jar --repo ${{ ENV.LSPATCH_REPO }} --pattern '*.jar'
 
       - name: Download Preset Modules | 下载预设模块
@@ -233,6 +235,7 @@ jobs:
           done
 
       - name: Patch QQ | 修补 QQ
+        id: patch_qq
         run: |
           # 动态生成模块列表
           module_list=""
@@ -252,8 +255,15 @@ jobs:
             done
           fi
           
-          # 移除开头的逗号并执行修补
+          # 移除 module_list 开头的逗号
           module_list="${module_list#","}"
+          # 若 module_list 为空，输出提示
+          if [ -z "$module_list" ]; then
+            echo "::warning::No modules selected for patching | 未选择任何模块进行修补"
+          fi
+          echo "模块列表: $module_list"
+          # 输出到 GITHUB_OUTPUT
+          echo "module_list=$module_list" >> $GITHUB_OUTPUT
 
           # 执行修补
           java -jar LSPatch.jar QQ-*.apk -m "$module_list" -l 2
@@ -265,9 +275,12 @@ jobs:
             *-lspatched.apk
             versions.json
           tag_name: Build#${{ github.run_number }} # 仓库中特定工作流程每个运行的唯一编号（从 1 开始递增）
-          name: "QQ Release ${{ needs.check-updates.outputs.QQ_version }} #${{ github.run_number }}" # 使用 QQ 版本号和构建编号作为标题
+          name: "QQ Build #${{ github.run_number }} (with ${{ needs.check-updates.outputs.QQ_version }})" # 使用 QQ 版本号和构建编号作为标题
           body: |
-            ### 本次修补使用的项目（不含自定义 QQ/模块）
+            ### 本次修补使用的模块列表
+            **${{ steps.patch_qq.outputs.module_list }}**
+
+            ### 所有默认配置项目的最新版本
             | 项目名称 | 对应版本 | 查看项目 |
             | ------- | -------- | ------- |
             | QQ 最新版本 | ${{ needs.check-updates.outputs.QQ_version }}         | [QQ 官网](https://im.qq.com/index) |
@@ -289,11 +302,11 @@ jobs:
             </details>
 
             ### 发行说明
-            您应该会在页面下方的 Assets 看到如下文件：
-            - QQ-`版本号`-`LSPatch 内部版本号`-lspatched.apk
-                此为自定义版本号修补的 QQ Android 版本
+            您应该会在页面下方的 Assets 看到如下文件（若启用对应配置项）：
+            - QQ-${{ env.QQ_CUSTOM_VERSION }}-`LSPatch 内部版本号`-lspatched.apk
+                此为自定义版本(${{ env.QQ_CUSTOM_VERSION }})修补的 QQ APK
             - QQ-${{ needs.check-updates.outputs.QQ_version }}-latest-`LSPatch 内部版本号`-lspatched.apk
-                此为基于 QQ Android 当前最新版本修补的版本
+                此为基于 QQ Android 当前最新版本修补的 QQ APK
             > 基于最新版 QQ 修补的版本，部分模块功能可能因为未适配而失效，请酌情使用
             - versions.json
                 此为本次修补使用的版本信息

@@ -38,7 +38,8 @@ modules:
 QQ:
   custom:
     enable: true # 选择是否修补自定义版本 QQ
-    url: "https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_9.1.31_64.apk"
+    version: "9.1.52" # 自定义QQ版本号（影响最终修补后的文件名）
+    url: "https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_9.1.52_64.apk"
     # 自定义 QQ 版本下载链接（确保此链接可直接下载文件）
     # 建议使用 Arm64 安装包，否则需手动更改 Acion Workflow 配置文件中 QAuxiliary 的下载文件名后缀
 
