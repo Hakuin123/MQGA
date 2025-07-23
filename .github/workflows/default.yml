@@ -80,7 +80,7 @@ jobs:
       - id: LSPatch
         uses: pozetroninc/github-action-get-latest-release@v0.8.0
         with:
-          repository: ${{ ENV.CUSTOM_LSPATCH_REPO }}
+          repository: ${{ ENV.LSPATCH_REPO }}
           excludes: prerelease, draft
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -128,7 +128,7 @@ jobs:
 
       # 检查是否强制启用修补
       - name: Force Mode Check 强制修补检查
-        if: ENV.FORCE == 'true'
+        if: ENV.FORCE_ENABLE == 'true'
         run: |
           echo "build_needed=true" >> $GITHUB_OUTPUT
           echo "::notice::Forced mode: enabled 强制修补：开启"
@@ -167,14 +167,12 @@ jobs:
           path: .
 
       - name: Download Custom QQ 下载自定义 QQ 版本
-        if: ENV.CUSTOM_ENABLE == 'true'
+        if: ENV.QQ_CUSTOM_ENABLE == 'true'
         run: |
-          wget -q -U "Mozilla/5.0" -O QQ-custom.apk "${{ ENV.CUSTOM_QQ_DOWNLOAD_LINK }}"
-        # gh release download -O QQ-8.9.58.apk --repo Hakuin123/MQGA READY --pattern QQ_8.9.58_64_HB2.apk
-        # 可以更改此处以自定义需要修补的 QQ 版本，可以添加多个（统一打包并上传）
+          wget -q -U "Mozilla/5.0" -O QQ-custom.apk "${{ ENV.QQ_CUSTOM_DOWNLOAD_LINK }}"
 
       - name: Download Latest QQ 下载最新版 QQ
-        if: ENV.LATEST_ENABLE == 'true'
+        if: ENV.QQ_LATEST_ENABLE == 'true'
         run: |
           wget -q -U "Mozilla/5.0" -O "QQ-${{ needs.check-updates.outputs.QQ_version }}-latest.apk" \
             $(curl -s -X POST -H "Content-Type: application/json" -d '{"packagename":"com.tencent.mobileqq"}' \
@@ -182,7 +180,7 @@ jobs:
 
       # 下载LSPatch
       - name: Download LSPatch 下载LSPatch
-        run: gh release download -O LSPatch.jar --repo ${{ ENV.CUSTOM_LSPATCH_REPO }} --pattern '*.jar'
+        run: gh release download -O LSPatch.jar --repo ${{ ENV.LSPATCH_REPO }} --pattern '*.jar'
 
       # 下载模块
       - name: Download Modules 下载模块
@@ -193,13 +191,13 @@ jobs:
           gh release download -O QQCleaner.apk  --repo KitsunePie/QQCleaner --pattern '*.apk'
 
       - name: Download Custom Modules 下载自定义模块
-        if: ENV.CUSTOM_MODULES_CUSTOM == 'true'
-        run: wget -q -U "Mozilla/5.0" -O custom-module.apk "${{ ENV.CUSTOM_MODULES_DOWNLOAD_LINK }}"
+        if: ENV.MODULES_CUSTOM_ENABLE == 'true'
+        run: wget -q -U "Mozilla/5.0" -O custom-module.apk "${{ ENV.MODULES_CUSTOM_DOWNLOAD_LINK }}"
 
       # 开始修补 QQ
       - name: Patch QQ 修补各版本 QQ
         run: |
-         if "${{ ENV.CUSTOM_MODULES_CUSTOM }}" == "true" ; then
+         if "${{ ENV.MODULES_CUSTOM_ENABLE }}" == "true" ; then
            java -jar LSPatch.jar QQ-*.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk,custom-module.apk -l 2
          else
            java -jar LSPatch.jar QQ-*.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk -l 2
@@ -223,7 +221,7 @@ jobs:
             | XAutoDaily | ${{ needs.check-updates.outputs.XAutoDaily_version }} | [GitHub](https://github.com/LuckyPray/XAutoDaily) |
             | TSBattery  | ${{ needs.check-updates.outputs.TSBattery_version }}  | [GitHub](https://github.com/fankes/TSBattery) |
             | QQCleaner  | ${{ needs.check-updates.outputs.QQCleaner_version }}  | [GitHub](https://github.com/KitsunePie/QQCleaner) |
-            | LSPatch    | ${{ needs.check-updates.outputs.LSPatch_version }}    | [GitHub](https://github.com/${{ ENV.CUSTOM_LSPATCH_REPO }})
+            | LSPatch    | ${{ needs.check-updates.outputs.LSPatch_version }}    | [GitHub](https://github.com/${{ ENV.LSPATCH_REPO }})
 
             <details><summary>点击展开模块更新日志</summary>
             #### QAuxiliary<br>

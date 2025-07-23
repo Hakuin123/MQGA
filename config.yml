@@ -1,33 +1,41 @@
-custom:
-  enable: true        # 选项：true | false
-  # 选择是否修补自定义版本 QQ
+# -----------------
+# LSPatch 与模块设置
+# -----------------
 
-  QQ_download_link: "https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_9.1.31_64.apk"
-  # 自定义 QQ 版本下载链接（需要是直链）
-  # 请自行检查输入的安装包链接是否为直链，也就是说输入的链接在浏览器打开后能够自动下载安装包，可百度或在 QQ 官网自行获取
-  # 建议使用 Arm64 安装包，否则需手动更改 GitHUb Acion Workflow 配置文件中 QAuxiliary 的下载文件名后缀
+# [LSPatch]
+LSPatch:
+  repo: "LSPosed/LSPatch"
+# 选择使用的 LSPatch 项目（需在 releases 中提供 .jar 文件）
+# JingMatrix 维护的 LSPatch 分支已适配 Android 15，若在高版本遇到兼容性问题可考虑使用
+# 将官方仓库 "LSPosed/LSPatch" 更改为 "JingMatrix/LSPatch" 即可（使用该分支产生的后果请自负）
 
-  LSPatch_repo: "LSPosed/LSPatch"
-  # 选择使用的 LSPatch 项目（需在 releases 中提供 .jar 文件）
-  # JingMatrix 维护的 LSPatch 分支已适配 Android 15，若在高版本遇到兼容性问题可考虑使用
-  # 将字符串 "LSPosed/LSPatch" 更改为 "JingMatrix/LSPatch" 即可（使用该分支产生的后果请自负）
-
-  modules:
-    # 示例：下载 FunBox（https://github.com/Xposed-Modules-Repo/have.fun）
-    custom: false     # 选项：true | false
-    # 是否启用自定义模块下载
+# [模块]
+modules:
+  # --- 自定义模块 ---
+  custom:
+    enable: false # 是否启用自定义模块下载
     download_link: "https://github.com/Xposed-Modules-Repo/have.fun/releases/download/1067-v1067/FunBox_v1067.Apk"
-    # 自定义模块下载链接（暂时仅支持单个），该模块将在修补时一同加入修补
-  
-  # （待开发功能）选择启用模块列表
+  # 自定义模块下载链接（示例为FunBox）
 
   # ci_channel: true
-  # （待开发功能）选择是否使用模块的最新CI构建版本（不稳定，一般不推荐开启）
+  # （待开发，暂不生效）选择是否使用模块的最新CI构建版本（不稳定，不推荐开启）
 
-latest:
-  enable: true       # 选项：true | false
-# 选择是否修补最新版 QQ
-# 基于最新版 QQ 修补的版本，部分模块功能可能因为未适配而失效，请酌情使用
+# -----------------
+# QQ 版本设置
+# -----------------
+QQ:
+  custom:
+    enable: true # 选择是否修补自定义版本 QQ
+    download_link: "https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_9.1.31_64.apk"
+    # 自定义 QQ 版本下载链接（确保此链接可直接下载文件）
+    # 建议使用 Arm64 安装包，否则需手动更改 Acion Workflow 配置文件中 QAuxiliary 的下载文件名后缀
 
-force: false         # 选项：true | false
-# 选择是否忽略版本更新状态，强制进行修补（不推荐长期开启）
+  latest:
+    enable: true # 选择是否修补最新版 QQ
+  # 注意：基于最新版 QQ 修补的版本，模块部分功能可能因为未适配而失效，请酌情使用
+
+# -----------------
+# 修补设置
+# -----------------
+force:
+  enable: false # 选择是否每次执行时均进行修补，忽略版本更新检查（不推荐长期开启）
