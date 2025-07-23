@@ -1,6 +1,6 @@
 name: Release
 
-run-name: Patch QQ
+run-name: "Patch QQ #${{ github.run_number }}"
 
 # 控制工作流何时运行
 on:
@@ -264,8 +264,8 @@ jobs:
           files: |
             *-lspatched.apk
             versions.json
-          tag_name: ${{ github.run_id }} # 存储库中每个工作流运行的唯一编号
-          name: QQ Release ${{ needs.check-updates.outputs.QQ_version }} # 使用 QQ 版本号作为标题
+          tag_name: Build#${{ github.run_number }} # 仓库中特定工作流程每个运行的唯一编号（从 1 开始递增）
+          name: "QQ Release ${{ needs.check-updates.outputs.QQ_version }} #${{ github.run_number }}" # 使用 QQ 版本号和构建编号作为标题
           body: |
             ### 本次修补使用的项目（不含自定义 QQ/模块）
             | 项目名称 | 对应版本 | 查看项目 |
