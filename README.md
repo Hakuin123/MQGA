@@ -4,12 +4,14 @@
 
 ~~**“让QQ再次伟大！”**~~
 
-本项目使用 [LSPatch](https://github.com/LSPosed/LSPatch) 和 [GitHub Action](https://github.com/features/actions) 自动化修补 QQ Android，并在其中嵌入以下 Xposed/LSPosed 模块：
+本项目使用 [LSPatch](https://github.com/LSPosed/LSPatch) 和 [GitHub Action](https://github.com/features/actions) 自动化修补 QQ Android，并在其中集成以下 Xposed/LSPosed 模块：
 
 - [QAuxiliary](https://github.com/cinit/QAuxiliary)
 - [XAutoDaily](https://github.com/LuckyPray/XAutoDaily)
 - [TSBattery](https://github.com/fankes/TSBattery)
 - [QQCleaner](https://github.com/KitsunePie/QQCleaner)（暂未适配 QQ NT）
+
+您也可以通过修改配置文件，自由选择需要集成的模块或指定 QQ 版本。
 
 （如果发现有更多好玩好用的模块，欢迎[提交 Issue 推荐给我们](https://github.com/Hakuin123/MQGA/issues/new)）
 
@@ -18,32 +20,36 @@
 > [!CAUTION]
 > 近期 QQ 官方加大了对模块 Hook 检测的力度，使用模块可能导致您的账号被**异常下线**、**限制社交功能**乃至**一定程度的封禁**，请**自行**判断您是否要使用模块。
 
-### 下载经过修补的 QQ Android 最新版 / 9.1.31
-请在 [Releases](https://github.com/Hakuin123/MQGA/releases) 下载已修补完成的最新版或 9.1.31 版本QQ。最新Release 构建状态：![状态：default](https://github.com/Hakuin123/MQGA/actions/workflows/default.yml/badge.svg) 
+### 下载经过修补的 QQ Android 最新版 / 9.1.52
+请在 [Releases](https://github.com/Hakuin123/MQGA/releases) 下载已修补完成的最新版或 9.1.52 版本QQ。
+最新Release 构建状态：![状态badge](https://github.com/Hakuin123/MQGA/actions/workflows/main.yml/badge.svg) 
 
 > [!TIP]
-> 想要在每次修补完成时获得通知？
-> 1. [登录 GitHub 账户](https://github.com/signin)
-> 2. 在本项目项目页面上方找到`Watch`（眼睛图标）并点击
+> 想要在每次修补完成时第一时间收到通知？
+> 1. 先[登录 GitHub 账户](https://github.com/signin)
+> 2. 打开本项目页面，点击页面右上角的`Watch`（眼睛图标）
 > 3. 选择`Custom`
-> 4. 勾选`Releases`并点击`Apply`以应用
-> 完成！接下来每当有新的 [Release](https://github.com/Hakuin123/MQGA/releases) 发布时，您将收到来自 GitHub 的提醒！该方法适用于任意 GitHub 项目
+> 4. 勾选`Releases`，然后点击`Apply`保存
+> 设置完成后，每当有新的 [Release](https://github.com/Hakuin123/MQGA/releases) 发布，您都会收到 GitHub 的提醒。此方法适用于所有 GitHub 项目
 
 
-### 修补自定义 QQ Android 版本（推荐）
+### 自定义修补 QQ APK / 模块（推荐）
 <details><summary>点击这里展开教程</summary>
 <p>
 
-1. [登录 GitHub 账户](https://github.com/signin)，然后 [Fork](https://github.com/Hakuin123/MQGA/fork) 此仓库
-> 被Fork的仓库的 Action 默认为关闭状态，需要手动启用
-2. 在**你自己 Fork 完成的仓库**（带有你自己的用户名）页面顶部点击`Actions`，并点击`I understand my workflows, go ahead and enable them`以启用该仓库的 Actions 功能
-3. 回到仓库主界面，按照注释编辑`config.yml`文件并`commit`
+1. [登录 GitHub 账户](https://github.com/signin)，然后点击右上角的 [Fork](https://github.com/Hakuin123/MQGA/fork) 按钮，将本项目复制到您的账号下  
+  > 注意：新 Fork 的仓库默认关闭 Actions，需要手动开启
+2. 进入**您自己账号下 Fork 后的仓库**页面，点击顶部的`Actions`标签页  
+3. 在页面提示中点击`I understand my workflows, go ahead and enable them`，以启用该仓库的 Actions 功能
+4. 返回仓库主界面，找到并编辑`config.yml`文件（根据注释修改，添加您需要的 QQ APK 或模块）
+5. 保存并提交更改
 
-此时应该会自动开始运行，恭喜你完成了全部的步骤！等待 Action 运行完成后，您将在 **Releases** 看到修补完成的安装包
+此时 GitHub Action 会自动开始运行，恭喜您，所有步骤都已完成！
+等待 Actions 运行结束后，您可以在自己仓库的 **Releases** 页面找到修补好的安装包进行下载。
 
-请注意，该项目会在**每周四**自动检查 QQ 和模块版本更新，如果检测到版本更新会自动按照配置进行修补并发布 Releases
+请注意，本项目会在**每周四**自动检查 QQ 和各模块的版本更新。如果检测到有新版本，会自动按照您的配置修补并发布到 Releases。
 
-> GitHub 会自动禁用 60 天没有任何活动的仓库的 Actions，届时会发出通知（比如邮件），按照通知手动启用 Actions 即可。
+> 注意：如果您的仓库 60 天内没有任何活动，GitHub 会自动禁用 Actions，并通过邮件等方式通知您。只需按照提示重新启用即可继续使用。
 
 </p>
 </details>
