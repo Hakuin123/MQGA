@@ -24,10 +24,10 @@ env:
 
 jobs:
   check-updates:
-    name: Version Checker 版本检查
+    name: Check for Updates | 检查更新
     runs-on: ubuntu-latest
     outputs:
-      build_needed: ${{ steps.version_check.outputs.build_needed }}
+      patch_needed: ${{ steps.version_check.outputs.patch_needed }}
       QQ_version: ${{ steps.get_qq_version.outputs.QQ_version }}
       QAuxiliary_version: ${{ steps.QAuxiliary.outputs.release }}
       XAutoDaily_version: ${{ steps.XAutoDaily.outputs.release }}
@@ -41,59 +41,66 @@ jobs:
       QQCleaner_description: ${{ steps.QQCleaner.outputs.description }}
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout | 检出代码
+        uses: actions/checkout@v4
 
-      - name: Set ENV values from YAML
+      - name: Set ENV values from config.yml | 从配置文件设置环境变量
         uses: dcarbone/yaml-to-env-action@v3
         with:
           yaml-file: config.yml
 
       # 模块版本检测
-      - id: QAuxiliary
+      - name: Get QAuxiliary version | 获取 QAuxiliary 版本
+        id: QAuxiliary
         uses: pozetroninc/github-action-get-latest-release@v0.8.0
         with:
           repository: cinit/QAuxiliary
           excludes: prerelease, draft
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - id: XAutoDaily
+      - name: Get XAutoDaily version | 获取 XAutoDaily 版本
+        id: XAutoDaily
         uses: pozetroninc/github-action-get-latest-release@v0.8.0
         with:
           repository: LuckyPray/XAutoDaily
           excludes: prerelease, draft
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - id: TSBattery
+      - name: Get TSBattery version | 获取 TSBattery 版本
+        id: TSBattery
         uses: pozetroninc/github-action-get-latest-release@v0.8.0
         with:
           repository: fankes/TSBattery
           excludes: prerelease, draft
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - id: QQCleaner
+      - name: Get QQCleaner version | 获取 QQCleaner 版本
+        id: QQCleaner
         uses: pozetroninc/github-action-get-latest-release@v0.8.0
         with:
           repository: KitsunePie/QQCleaner
           excludes: prerelease, draft
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - id: LSPatch
+      - name: Get LSPatch version | 获取LSPatch版本
+        id: LSPatch
         uses: pozetroninc/github-action-get-latest-release@v0.8.0
         with:
           repository: ${{ ENV.LSPATCH_REPO }}
           excludes: prerelease, draft
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get QQ Version 获取 QQ 版本
+      - name: Get QQ Version | 获取 QQ 版本
         id: get_qq_version
         run: |
           response=$(curl -s -X POST -H "Content-Type: application/json" -d '{"packagename":"com.tencent.mobileqq"}' https://upage.html5.qq.com/wechat-apkinfo)
           clean_response=$(echo "$response" | tr -cd '[:print:]')
           version_name=$(echo "$clean_response" | jq -r '.app_detail_records."com.tencent.mobileqq".apk_all_data.version_name')
+          # 设置输出变量
           echo "QQ_version=$version_name" >> $GITHUB_OUTPUT
 
       # 版本比对逻辑
-      - name: Version Comparison 版本对比
+      - name: Version Comparison | 版本比对
         id: version_check
         run: |
           # 获取历史版本号记录
@@ -118,60 +125,63 @@ jobs:
 
           # 版本比对
           if [[ "$(cat versions.json)" == "$current_versions" ]]; then
-            echo "::notice::All versions are up-to-date 所有版本均为最新版"
+            echo "::notice::All versions are up-to-date | 所有版本均为最新版"
             # 强制模式检查
             if [[ "${{ env.FORCE_ENABLE }}" == "true" ]]; then
-              echo "::notice::Force mode enabled, patching anyway 强制模式已启用，仍执行修补"
+              echo "::notice::Force mode enabled, patching anyway | 强制模式已启用，仍执行修补"
               echo "$current_versions" > versions.json
-              echo "build_needed=true" >> $GITHUB_OUTPUT
+              echo "patch_needed=true" >> $GITHUB_OUTPUT
             else
-              echo "build_needed=false" >> $GITHUB_OUTPUT
+              echo "patch_needed=false" >> $GITHUB_OUTPUT
             fi
           else
-            echo "::notice::New version detected 检测到新版本"
+            echo "::notice::New version detected | 检测到新版本"
             echo "$current_versions" > versions.json
-            echo "build_needed=true" >> $GITHUB_OUTPUT
+            echo "patch_needed=true" >> $GITHUB_OUTPUT
           fi
 
       # 上传版本信息记录文件
-      - uses: actions/upload-artifact@v4
-        if: steps.version_check.outputs.build_needed == 'true'
+      - name: Upload version info | 上传版本信息
+        uses: actions/upload-artifact@v4
+        if: steps.version_check.outputs.patch_needed == 'true'
         with:
           name: version-info
           path: versions.json
 
-  build:
-    name: Build Release 构建 Releases
+  patch:
+    name: Patch QQ | 修补 QQ
     needs: check-updates
-    if: needs.check-updates.outputs.build_needed == 'true'
+    if: needs.check-updates.outputs.patch_needed == 'true'
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout | 检出代码
+        uses: actions/checkout@v4
 
-      - name: Setup Java JDK
+      - name: Setup Java JDK | 设置 Java JDK
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
           java-version: "21"
 
-      - name: Set ENV values from YAML
+      - name: Set ENV values from config.yml | 从配置文件设置环境变量
         uses: dcarbone/yaml-to-env-action@v3
         with:
           yaml-file: config.yml
 
       # 下载版本记录资源
-      - uses: actions/download-artifact@v4
+      - name: Download version info | 下载版本信息
+        uses: actions/download-artifact@v4
         with:
           name: version-info
           path: .
 
-      - name: Download Custom QQ 下载自定义 QQ 版本
+      - name: Download Custom QQ | 下载自定义 QQ 版本
         if: ENV.QQ_CUSTOM_ENABLE == 'true'
         run: |
           wget -q -U "Mozilla/5.0" -O QQ-custom.apk "${{ ENV.QQ_CUSTOM_DOWNLOAD_LINK }}"
 
-      - name: Download Latest QQ 下载最新版 QQ
+      - name: Download Latest QQ | 下载最新版 QQ
         if: ENV.QQ_LATEST_ENABLE == 'true'
         run: |
           wget -q -U "Mozilla/5.0" -O "QQ-${{ needs.check-updates.outputs.QQ_version }}-latest.apk" \
@@ -179,10 +189,10 @@ jobs:
             https://upage.html5.qq.com/wechat-apkinfo | tr -cd '[:print:]' | jq -r '.app_detail_records."com.tencent.mobileqq".apk_all_data.url')
 
       # 下载LSPatch
-      - name: Download LSPatch 下载LSPatch
+      - name: Download LSPatch | 下载LSPatch
         run: gh release download -O LSPatch.jar --repo ${{ ENV.LSPATCH_REPO }} --pattern '*.jar'
 
-      - name: Download Preset Modules 下载预设模块
+      - name: Download Preset Modules | 下载预设模块
         run: |
           # 动态下载启用的预设模块
           if [ "${{ env.MODULES_QAUXILIARY }}" = "true" ]; then
@@ -198,12 +208,12 @@ jobs:
             gh release download -O QQCleaner.apk --repo KitsunePie/QQCleaner --pattern '*.apk'
           fi
 
-      - name: Download Custom Modules 下载自定义模块
+      - name: Download Custom Modules | 下载自定义模块
         if: env.MODULES_CUSTOM_ENABLE == 'true'
         run: |
           # 获取模块数量
           count=$(yq eval '.modules.custom.list | length' config.yml)
-          echo "找到 $count 个自定义模块"
+          echo "Found $count custom modules | 找到 $count 个自定义模块"
           
           # 遍历下载所有自定义模块
           for ((i=0; i<count; i++)); do
@@ -212,17 +222,17 @@ jobs:
             
             # 替换文件名中的非法字符
             safe_name=$(echo "$name" | tr ' ' '_' | tr -cd '[:alnum:]-_')
-            echo "从 $url 下载 $name"
+            echo "Downloading $name from $link | 从 $url 下载 $name"
             
-            wget -q -U "Mozilla/5.0" -O "custom-module-${safe_name}.apk" "$url" || echo "::warning::Failed to download $name 下载 $name 失败"
+            wget -q -U "Mozilla/5.0" -O "custom-module-${safe_name}.apk" "$url" || echo "::warning::Failed to download $name | 下载 $name 失败"
             
             # 检查文件是否下载成功
             if [ ! -f "custom-module-${safe_name}.apk" ]; then
-              echo "::error::Custom module $name failed to download 模块 $name 下载失败"
+              echo "::error::Custom module $name failed to download | 自定义模块 $name 下载失败"
             fi
           done
 
-      - name: Patch QQ 修补QQ
+      - name: Patch QQ | 修补 QQ
         run: |
           # 动态生成模块列表
           module_list=""
@@ -248,7 +258,7 @@ jobs:
           # 执行修补
           java -jar LSPatch.jar QQ-*.apk -m "$module_list" -l 2
 
-      - name: Create Release
+      - name: Create Release | 创建 Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
@@ -260,12 +270,12 @@ jobs:
             ### 本次修补使用的项目（不含自定义 QQ/模块）
             | 项目名称 | 对应版本 | 查看项目 |
             | ------- | -------- | ------- |
-            | QQ 最新版本 | ${{ needs.check-updates.outputs.QQ_version }}         | [QQ 官网](https://im.qq.com/index)|
+            | QQ 最新版本 | ${{ needs.check-updates.outputs.QQ_version }}         | [QQ 官网](https://im.qq.com/index) |
             | QAuxiliary | ${{ needs.check-updates.outputs.QAuxiliary_version }} | [GitHub](https://github.com/cinit/QAuxiliary) |
             | XAutoDaily | ${{ needs.check-updates.outputs.XAutoDaily_version }} | [GitHub](https://github.com/LuckyPray/XAutoDaily) |
             | TSBattery  | ${{ needs.check-updates.outputs.TSBattery_version }}  | [GitHub](https://github.com/fankes/TSBattery) |
             | QQCleaner  | ${{ needs.check-updates.outputs.QQCleaner_version }}  | [GitHub](https://github.com/KitsunePie/QQCleaner) |
-            | LSPatch    | ${{ needs.check-updates.outputs.LSPatch_version }}    | [GitHub](https://github.com/${{ ENV.LSPATCH_REPO }})
+            | LSPatch    | ${{ needs.check-updates.outputs.LSPatch_version }}    | [GitHub](https://github.com/${{ ENV.LSPATCH_REPO }}) |
 
             <details><summary>点击展开模块更新日志</summary>
             #### QAuxiliary<br>
