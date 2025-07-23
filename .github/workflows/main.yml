@@ -179,7 +179,7 @@ jobs:
       - name: Download Custom QQ | 下载自定义 QQ 版本
         if: ENV.QQ_CUSTOM_ENABLE == 'true'
         run: |
-          wget -q -U "Mozilla/5.0" -O QQ-custom.apk "${{ ENV.QQ_CUSTOM_DOWNLOAD_LINK }}"
+          wget -q -U "Mozilla/5.0" -O QQ-custom.apk "${{ ENV.QQ_CUSTOM_URL }}"
 
       - name: Download Latest QQ | 下载最新版 QQ
         if: ENV.QQ_LATEST_ENABLE == 'true'
