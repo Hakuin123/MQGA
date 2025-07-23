@@ -182,27 +182,71 @@ jobs:
       - name: Download LSPatch 下载LSPatch
         run: gh release download -O LSPatch.jar --repo ${{ ENV.LSPATCH_REPO }} --pattern '*.jar'
 
-      # 下载模块
-      - name: Download Modules 下载模块
+      - name: Download Preset Modules 下载预设模块
         run: |
-          gh release download -O QAuxiliary.apk --repo cinit/QAuxiliary     --pattern '*arm64.apk'
-          gh release download -O XAutoDaily.apk --repo LuckyPray/XAutoDaily --pattern '*.apk'
-          gh release download -O TSBattery.apk  --repo fankes/TSBattery     --pattern '*.apk'
-          gh release download -O QQCleaner.apk  --repo KitsunePie/QQCleaner --pattern '*.apk'
+          # 动态下载启用的预设模块
+          if [ "${{ env.MODULES_QAUXILIARY }}" = "true" ]; then
+            gh release download -O QAuxiliary.apk --repo cinit/QAuxiliary --pattern '*arm64.apk'
+          fi
+          if [ "${{ env.MODULES_XAUTODAILY }}" = "true" ]; then
+            gh release download -O XAutoDaily.apk --repo LuckyPray/XAutoDaily --pattern '*.apk'
+          fi
+          if [ "${{ env.MODULES_TSBATTERY }}" = "true" ]; then
+            gh release download -O TSBattery.apk --repo fankes/TSBattery --pattern '*.apk'
+          fi
+          if [ "${{ env.MODULES_QQCLEANER }}" = "true" ]; then
+            gh release download -O QQCleaner.apk --repo KitsunePie/QQCleaner --pattern '*.apk'
+          fi
 
       - name: Download Custom Modules 下载自定义模块
-        if: ENV.MODULES_CUSTOM_ENABLE == 'true'
-        run: wget -q -U "Mozilla/5.0" -O custom-module.apk "${{ ENV.MODULES_CUSTOM_DOWNLOAD_LINK }}"
-
-      # 开始修补 QQ
-      - name: Patch QQ 修补各版本 QQ
+        if: env.MODULES_CUSTOM_ENABLE == 'true'
         run: |
-         if "${{ ENV.MODULES_CUSTOM_ENABLE }}" == "true" ; then
-           java -jar LSPatch.jar QQ-*.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk,custom-module.apk -l 2
-         else
-           java -jar LSPatch.jar QQ-*.apk -m QAuxiliary.apk,XAutoDaily.apk,TSBattery.apk,QQCleaner.apk -l 2
-         fi
-        # 这个写法烂透了但是只是权宜之计，等到选择启用模块列表功能完成后这里的逻辑也将被替换，或者欢迎 PR
+          # 获取模块数量
+          count=$(yq eval '.modules.custom.list | length' config.yml)
+          echo "找到 $count 个自定义模块"
+          
+          # 遍历下载所有自定义模块
+          for ((i=0; i<count; i++)); do
+            name=$(yq eval ".modules.custom.list[$i].name" config.yml)
+            url=$(yq eval ".modules.custom.list[$i].url" config.yml)
+            
+            # 替换文件名中的非法字符
+            safe_name=$(echo "$name" | tr ' ' '_' | tr -cd '[:alnum:]-_')
+            echo "从 $url 下载 $name"
+            
+            wget -q -U "Mozilla/5.0" -O "custom-module-${safe_name}.apk" "$url" || echo "::warning::Failed to download $name 下载 $name 失败"
+            
+            # 检查文件是否下载成功
+            if [ ! -f "custom-module-${safe_name}.apk" ]; then
+              echo "::error::Custom module $name failed to download 模块 $name 下载失败"
+            fi
+          done
+
+      - name: Patch QQ 修补QQ
+        run: |
+          # 动态生成模块列表
+          module_list=""
+          
+          # 添加预设模块
+          if [ "${{ env.MODULES_QAUXILIARY }}" = "true" ]; then module_list="${module_list},QAuxiliary.apk"; fi
+          if [ "${{ env.MODULES_XAUTODAILY }}" = "true" ]; then module_list="${module_list},XAutoDaily.apk"; fi
+          if [ "${{ env.MODULES_TSBATTERY }}" = "true" ]; then module_list="${module_list},TSBattery.apk"; fi
+          if [ "${{ env.MODULES_QQCLEANER }}" = "true" ]; then module_list="${module_list},QQCleaner.apk"; fi
+          
+          # 添加自定义模块
+          if [ "${{ env.MODULES_CUSTOM_ENABLE }}" = "true" ]; then
+            for file in custom-module-*.apk; do
+              if [ -f "$file" ]; then
+                module_list="${module_list},$file"
+              fi
+            done
+          fi
+          
+          # 移除开头的逗号并执行修补
+          module_list="${module_list#","}"
+
+          # 执行修补
+          java -jar LSPatch.jar QQ-*.apk -m "$module_list" -l 2
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
