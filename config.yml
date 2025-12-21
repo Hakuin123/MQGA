@@ -15,8 +15,8 @@ modules:
   # 将值设为 true 来启用模块，设为 false 则禁用
   QAuxiliary: true
   XAutoDaily: true
-  TSBattery: true
-  QQCleaner: false
+  TSBattery: false
+  QQCleaner: true
 
   # --- 自定义模块 ---
   custom:
@@ -37,14 +37,14 @@ modules:
 # -----------------
 QQ:
   custom:
-    enable: false # 选择是否修补自定义版本 QQ
-    version: "9.1.52" # 自定义QQ版本号（影响最终修补后的文件名）
-    url: "https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_9.1.52_64.apk"
+    enable: true # 选择是否修补自定义版本 QQ
+    version: "8.9.58" # 自定义QQ版本号（影响最终修补后的文件名）
+    url: "https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_8.9.58_64_HB2.apk"
     # 自定义 QQ 版本下载链接（确保此链接可直接下载文件）
     # 建议使用 Arm64 安装包，否则需手动更改 Acion Workflow 配置文件中 QAuxiliary 的下载文件名后缀
 
   latest:
-    enable: true # 选择是否修补最新版 QQ
+    enable: false # 选择是否修补最新版 QQ
   # 注意：基于最新版 QQ 修补的版本，模块部分功能可能因为未适配而失效，请酌情使用
 
 # -----------------
