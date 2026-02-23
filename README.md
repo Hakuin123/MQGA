@@ -92,7 +92,7 @@
 > 以下版本无论是否使用模块均可获得相对较好的体验，欢迎尝试
 
 ### [QQ NT（当前最新版）](https://im.qq.com/index/#downloadAnchor)
-最新版 QQ 基于 [Electron](https://www.electronjs.org/zh/) 重构，同时更改了聊天消息存储结构，性能得到大幅提升，若未尝试过 8.9.63 及以上版本则极力推荐尝试。
+最新版 QQ 基于 [Electron](https://www.electronjs.org/zh/) 重构，同时更改了聊天消息存储结构，性能得到大幅提升，若未尝试过 8.9.63 及以上版本则极力推荐尝试
 
 但请注意，基于最新版 QQ 修补的版本，部分模块功能可能因为未适配而失效，请酌情使用
 
@@ -111,3 +111,7 @@
 ## 更好地食用
 
 配合 GitHub 镜像站/加速下载站食用更香。
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Hakuin123/MQGA&type=date&legend=top-left)](https://www.star-history.com/#Hakuin123/MQGA&type=date&legend=top-left)
