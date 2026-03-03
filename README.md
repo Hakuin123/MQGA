@@ -96,8 +96,8 @@
 
 但请注意，基于最新版 QQ 修补的版本，部分模块功能可能因为未适配而失效，请酌情使用
 
-### [QQ 8.9.58.11175](https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_8.9.58_64_HB2.apk)
-最后一个**不**基于 QQ_NT 的版本
+### [QQ 8.9.58.11175](https://web.archive.org/web/20230712132702/https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_8.9.58_64_HB2.apk)
+最后一个**不**基于 QQ_NT 的版本（[原链接](https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_8.9.58_64_HB2.apk)已失效，此处为`web.archive.org`存档）
 
 ### [QQ 8.8.50.6735](https://dldir1.qq.com/qqfile/qq/expcenter/1458/28d2b3f249db11ec819ad00d4e61d76c/qq_8.8.50.6735_rb4227cab_v2324_release.apk)
 最后一个不是 3A 大作（未内置虚幻引擎 4，无超级 QQ 秀）的版本
@@ -105,8 +105,9 @@
 ### [TIM NT（当前最新版）](https://office.qq.com/download.html)
 极为简洁的 QQ 官方修改版，4.0.0 后底包基于 QQ 9.0.95（QQ NT 版本）
 
-### [TIM 3.4.8](https://downv6.qq.com/qqweb/QQ_1/android_apk/tim_3.4.8.3108_537129495_64.apk)
+### [TIM 3.4.8](https://web.archive.org/web/20221126093522/https://downv6.qq.com/qqweb/QQ_1/android_apk/tim_3.4.8.3108_537129495_64.apk)
 （相对没那么推荐）底包基于 QQ 8.3.9 ，邮箱入口不会被云控移除，日历功能也保留（但有反馈说无法登录）
+（[原链接](https://downv6.qq.com/qqweb/QQ_1/android_apk/tim_3.4.8.3108_537129495_64.apk)已失效，此处为`web.archive.org`存档）
 
 ## 更好地食用
 
