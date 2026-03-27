@@ -192,7 +192,12 @@ jobs:
 
       # 下载 LSPatch
       - name: Download LSPatch | 下载 LSPatch
-        run: gh release download -O LSPatch.jar --repo ${{ ENV.LSPATCH_REPO }} --pattern '*.jar'
+        run: |
+          if [ "${{ env.LSPATCH_REPO }}" = "JingMatrix/LSPatch" ]; then
+            gh release download -O LSPatch.jar --repo "JingMatrix/LSPatch" --pattern 'lspatch.jar'
+          else
+            gh release download -O LSPatch.jar --repo "${{ env.LSPATCH_REPO }}" --pattern '*.jar'
+          fi
 
       - name: Download Preset Modules | 下载预设模块
         run: |
