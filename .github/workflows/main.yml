@@ -209,7 +209,7 @@ jobs:
             gh release download -O XAutoDaily.apk --repo LuckyPray/XAutoDaily --pattern '*.apk'
           fi
           if [ "${{ env.MODULES_TSBATTERY }}" = "true" ]; then
-            gh release download -O TSBattery.apk --repo fankes/TSBattery --pattern '*.apk'
+            gh release download -O TSBattery.apk --repo fankes/TSBattery --pattern '*-legacy-release.apk'
           fi
           if [ "${{ env.MODULES_QQCLEANER }}" = "true" ]; then
             gh release download -O QQCleaner.apk --repo KitsunePie/QQCleaner --pattern '*.apk'
