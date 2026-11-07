@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 配置JAVA SDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v6
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '17'
@@ -58,7 +58,7 @@ jobs:
 
       # 发布Release以便下载
       #- name: 发布Release
-      #  uses: softprops/action-gh-release@v1
+      #  uses: softprops/action-gh-release@v3
       #  with:
       #    files: QQ-custom-lspatched.apk
       #    tag_name: Custom
@@ -67,7 +67,7 @@ jobs:
 
       # 上传修补完成的文件
       - name: 上传修补完成的文件
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: QQ-${{ inputs.version }}-Release
           path: .
